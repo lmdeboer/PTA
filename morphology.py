@@ -19,8 +19,10 @@ def read_file(file_name):
             json_obj = json.loads(line.strip())
             text = json_obj.get('text', '')
             texts.append(text)
+    
+    all_text = ' '.join(texts)
     nlp = spacy.load("en_core_web_sm")
-    doc = nlp(texts)
+    doc = nlp(all_text)
     return doc
 
 
