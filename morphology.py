@@ -15,11 +15,13 @@ def read_file(file_name):
     """
     texts = []
     with open(file_name, 'r', encoding='utf-8') as file:
-        for line in file:
+        lines = file.readlines()
+        # half of the files, could not process more due to character limit
+        for line in lines[:326]:
             json_obj = json.loads(line.strip())
             text = json_obj.get('text', '')
             texts.append(text)
-    
+
     all_text = ' '.join(texts)
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(all_text)
@@ -48,7 +50,6 @@ def tokenization(text):
     return [token.text.strip() for token in text]
 
 
-
 def main():
     human_file = 'human.jsonl'
     ai_file = 'group2.jsonl'
@@ -56,9 +57,8 @@ def main():
     ai_text = read_file(ai_file)
     human_tokens = tokenization(human_text)
     ai_tokens = tokenization(ai_text)
-    ai_lemmas = lemmatization(ai_tokens)
-    human_lemmas = lemmatization(human_tokens)
-
+    ai_lemmas = lemmatization(ai_text)
+    human_lemmas = lemmatization(human_text)
 
 
 if __name__ == '__main__':
