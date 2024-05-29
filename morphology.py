@@ -51,6 +51,31 @@ def tokenization(text):
     return [token.text.strip() for token in text]
 
 
+def count_tags(tags):
+    """Count the frequency of each POS tag and return the
+    10 most frequent tags
+    :param tags:
+    :return: most frequent POS tags.
+    """
+    unique_pos = len(Counter(tags))
+    print("Number of unique POS tags: " + str(unique_pos))
+
+    pos = {}
+    # Loop through tags
+    for tag in tags:
+        if tag in pos:
+            pos[tag] += 1
+        else:
+            pos[tag] = 1
+
+    # count 10 most frequent values
+    N = 10
+    most_frequent = dict(sorted(pos.items(),
+                                key=lambda x: x[1], reverse=True)[:N])
+
+    return most_frequent
+
+
 def get_chunks(doc, filter_root=None):
     """Get noun chunks from a spaCy document, optionally filtered by
     root token properties
@@ -117,6 +142,18 @@ def main():
     print("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:")
     for chunk, frequency in common_proper_noun_chunks_human.most_common(10):
         print(f"{chunk}: {frequency}")
+
+    tags_ai = []
+    for word in ai_text:
+        tags_ai.append(word.pos_)
+    print("10 Most frequent POS tags in ai text: " +
+          str(count_tags(tags_ai)))
+
+    tags_human = []
+    for word in human_text:
+        tags_human.append(word.pos_)
+    print("10 Most frequent POS tags in human text: " +
+          str(count_tags(tags_human)))
 
 
 if __name__ == '__main__':
