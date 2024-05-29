@@ -54,15 +54,38 @@ def tokenization(text):
 def get_chunks(doc, filter_root=None):
     """Get noun chunks from a spaCy document, optionally filtered by
     root token properties
-    :param doc:
-    :param filter_root:
-    :return: """
+    :param doc
+    :param filter_root
+    :return: noun chunks
+    """
     if filter_root:
         chunks = (chunk.text for chunk in doc.noun_chunks if
                   chunk.root.pos_ == filter_root)
     else:
         chunks = (chunk.text for chunk in doc.noun_chunks)
+
     return chunks
+
+
+def extract_subject_pnoun_chunks(doc):
+    """Extract noun chunks where the root token is a proper noun and
+    the subject of the sentence.
+    :param doc
+    :return: proper and subject root noun chunks
+    """
+    subject_pnoun_chunks = []
+    for sent in doc.sents:
+        for token in sent:
+            if token.dep_ == 'nsubj' and token.pos_ == 'PROPN':
+                root_token = token
+                break
+        else:
+            continue
+        for chunk in sent.noun_chunks:
+            if chunk.root == root_token:
+                subject_pnoun_chunks.append(chunk.text)
+
+    return subject_pnoun_chunks
 
 
 def main():
@@ -75,14 +98,24 @@ def main():
     ai_lemmas = lemmatization(ai_text)
     human_lemmas = lemmatization(human_text)
 
-    common_chunks = Counter(get_chunks(ai_text))
+    common_chunks_ai = Counter(get_chunks(ai_text))
     print("10 Most Common Noun Chunks in ai text:")
-    for chunk, frequency in common_chunks.most_common(10):
+    for chunk, frequency in common_chunks_ai.most_common(10):
         print(f"{chunk}: {frequency}")
 
-    common_chunks = Counter(get_chunks(human_text))
+    common_chunks_human = Counter(get_chunks(human_text))
     print("10 Most Common Noun Chunks in human text:")
-    for chunk, frequency in common_chunks.most_common(10):
+    for chunk, frequency in common_chunks_human.most_common(10):
+        print(f"{chunk}: {frequency}")
+
+    common_proper_noun_chunks_ai = Counter(get_chunks(ai_text, filter_root='PROPN'))
+    print("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:")
+    for chunk, frequency in common_proper_noun_chunks_ai.most_common(10):
+        print(f"{chunk}: {frequency}")
+
+    common_proper_noun_chunks_human = Counter(get_chunks(human_text, filter_root='PROPN'))
+    print("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:")
+    for chunk, frequency in common_proper_noun_chunks_human.most_common(10):
         print(f"{chunk}: {frequency}")
 
 
