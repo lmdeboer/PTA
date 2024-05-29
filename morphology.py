@@ -4,6 +4,7 @@
 
 import json
 import spacy
+from collections import Counter
 
 
 def read_file(file_name):
@@ -50,6 +51,20 @@ def tokenization(text):
     return [token.text.strip() for token in text]
 
 
+def get_chunks(doc, filter_root=None):
+    """Get noun chunks from a spaCy document, optionally filtered by
+    root token properties
+    :param doc:
+    :param filter_root:
+    :return: """
+    if filter_root:
+        chunks = (chunk.text for chunk in doc.noun_chunks if
+                  chunk.root.pos_ == filter_root)
+    else:
+        chunks = (chunk.text for chunk in doc.noun_chunks)
+    return chunks
+
+
 def main():
     human_file = 'human.jsonl'
     ai_file = 'group2.jsonl'
@@ -59,6 +74,16 @@ def main():
     ai_tokens = tokenization(ai_text)
     ai_lemmas = lemmatization(ai_text)
     human_lemmas = lemmatization(human_text)
+
+    common_chunks = Counter(get_chunks(ai_text))
+    print("10 Most Common Noun Chunks in ai text:")
+    for chunk, frequency in common_chunks.most_common(10):
+        print(f"{chunk}: {frequency}")
+
+    common_chunks = Counter(get_chunks(human_text))
+    print("10 Most Common Noun Chunks in human text:")
+    for chunk, frequency in common_chunks.most_common(10):
+        print(f"{chunk}: {frequency}")
 
 
 if __name__ == '__main__':
