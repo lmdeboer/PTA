@@ -145,15 +145,6 @@ def main():
     human_most_common_hypernyms = common_hypernyms(human_hypernyms)
     num_human_nouns_without_synsets, human_nouns_without_synsets = count_tokens_without_synsets(human_tokens)
     
-    # Print human results
-    print("Human articles")
-    print(f"Number of ambiguous words: {human_ambiguous_words}")
-    print(f"Number of unique synsets: {human_unique_synsets}")
-    print(f"10 most common hypernyms in human articles: {human_most_common_hypernyms}")
-    print(f"Amount of tokens in human articles that have no synsets: {num_human_nouns_without_synsets}")
-    print(f"Top 10 tokens without synsets in human articles: {human_nouns_without_synsets}")
-    print("----------------------------------------------------------")
-    
     # Process AI articles
     ai_text = read_file(ai_file)
     ai_lemmas = lemmatization(ai_text)
@@ -166,14 +157,25 @@ def main():
     ai_most_common_hypernyms = common_hypernyms(ai_hypernyms)
     num_ai_nouns_without_synsets, ai_nouns_without_synsets = count_tokens_without_synsets(ai_tokens)
 
-    # Print AI articles results
-    print("AI generated articles")
-    print(f"Number of ambiguous words: {ai_ambiguous_words}")
-    print(f"Number of unique synsets: {ai_unique_synsets}")
-    print(f"10 most common hypernyms in AI text: {ai_most_common_hypernyms}")
-    print(f"Amount of tokens in AI articles that have no synsets: {num_ai_nouns_without_synsets}")
-    print(f"Top 10 tokens without synsets in AI articles: {ai_nouns_without_synsets}")
-    print("----------------------------------------------------------")
+
+    with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
+        # Wite human article results to file
+        semantics_file.write("Human articles\n")
+        semantics_file.write(f"Number of ambiguous words: {human_ambiguous_words}\n")
+        semantics_file.write(f"Number of unique synsets: {human_unique_synsets}\n")
+        semantics_file.write(f"10 most common hypernyms in human articles: {human_most_common_hypernyms}\n")
+        semantics_file.write(f"Amount of tokens in human articles that have no synsets: {num_human_nouns_without_synsets}\n")
+        semantics_file.write(f"Top 10 tokens without synsets in human articles: {human_nouns_without_synsets}\n")
+        semantics_file.write("----------------------------------------------------------\n")
+        
+        # Write AI articles results to file.
+        semantics_file.write("AI generated articles\n")
+        semantics_file.write(f"Number of ambiguous words: {ai_ambiguous_words}\n")
+        semantics_file.write(f"Number of unique synsets: {ai_unique_synsets}\n")
+        semantics_file.write(f"10 most common hypernyms in AI text: {ai_most_common_hypernyms}\n")
+        semantics_file.write(f"Amount of tokens in AI articles that have no synsets: {num_ai_nouns_without_synsets}\n")
+        semantics_file.write(f"Top 10 tokens without synsets in AI articles: {ai_nouns_without_synsets}\n")
+        semantics_file.write("----------------------------------------------------------\n")
 
 if __name__ == '__main__':
     main()
