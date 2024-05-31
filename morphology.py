@@ -1,4 +1,4 @@
-# Laura de Boer, Dertje Roggeveen, Roshana Vegter
+# Laura de Boer, Dertje Roggeveen, Roshana Vegter en Julian Paagman
 # Group 2
 # morphology.py
 
@@ -123,6 +123,9 @@ def extract_subject_pnoun_chunks(doc):
                 subject_pnoun_chunks.append(chunk.text)
 
     return subject_pnoun_chunks
+
+
+
 
 
 def main():
