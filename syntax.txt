@@ -1,0 +1,50 @@
+10 Most Common Noun Chunks in ai text:
+We: 751
+it: 493
+that: 461
+he: 424
+I: 386
+who: 368
+It: 313
+He: 303
+we: 284
+they: 261
+10 Most Common Noun Chunks in human text:
+he: 890
+it: 833
+that: 716
+who: 580
+I: 575
+they: 449
+we: 439
+you: 373
+which: 322
+It: 263
+
+10 Most Common Noun Chunks with Proper Noun Roots in ai text:
+Trump: 113
+Afghanistan: 95
+Facebook: 86
+the United States: 72
+Biden: 72
+Woods: 69
+Harry: 65
+Meghan: 58
+Chris Cuomo: 54
+Harris: 49
+
+10 Most Common Noun Chunks with Proper Noun Roots in ai text:
+Trump: 139
+Facebook: 126
+Biden: 89
+Afghanistan: 80
+CNN: 73
+Meghan: 73
+Twitter: 73
+the Capitol: 72
+Congress: 66
+Woods: 64
+10 Most frequent POS tags in ai text: {'NOUN': 33676, 'PUNCT': 23465, 'PROPN': 21163, 'VERB': 19151, 'ADP': 17376, 'DET': 14790, 'ADJ': 11024, 'PRON': 8590, 'AUX': 8178, 'PART': 5787}
+10 Most frequent POS tags in human text: {'NOUN': 34661, 'PUNCT': 23234, 'VERB': 21059, 'PROPN': 20647, 'ADP': 20047, 'DET': 15851, 'ADJ': 11275, 'PRON': 11027, 'AUX': 9142, 'ADV': 6178}
+Most common specified dependency in ai text: ('ADJ', [('significant', 178)])
+Most common specified dependency in human text: ('ADJ', [('more', 267)])
