@@ -57,8 +57,6 @@ def count_tags(tags):
     :param tags:
     :return: most frequent POS tags.
     """
-    unique_pos = len(Counter(tags))
-    print("Number of unique POS tags: " + str(unique_pos))
 
     pos = {}
     # Loop through tags
@@ -135,43 +133,44 @@ def main():
     ai_lemmas = lemmatization(ai_text)
     human_lemmas = lemmatization(human_text)
 
-    common_chunks_ai = Counter(get_chunks(ai_text))
-    print("10 Most Common Noun Chunks in ai text:")
-    for chunk, frequency in common_chunks_ai.most_common(10):
-        print(f"{chunk}: {frequency}")
+    with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
+        common_chunks_ai = Counter(get_chunks(ai_text))
+        syntax_file.write("10 Most Common Noun Chunks in ai text:\n")
+        for chunk, frequency in common_chunks_ai.most_common(10):
+            syntax_file.write(f"{chunk}: {frequency}\n")
 
-    common_chunks_human = Counter(get_chunks(human_text))
-    print("10 Most Common Noun Chunks in human text:")
-    for chunk, frequency in common_chunks_human.most_common(10):
-        print(f"{chunk}: {frequency}")
+        common_chunks_human = Counter(get_chunks(human_text))
+        syntax_file.write("10 Most Common Noun Chunks in human text:\n")
+        for chunk, frequency in common_chunks_human.most_common(10):
+            syntax_file.write(f"{chunk}: {frequency}\n")
 
-    common_proper_noun_chunks_ai = Counter(get_chunks(ai_text, filter_root='PROPN'))
-    print("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:")
-    for chunk, frequency in common_proper_noun_chunks_ai.most_common(10):
-        print(f"{chunk}: {frequency}")
+        common_proper_noun_chunks_ai = Counter(get_chunks(ai_text, filter_root='PROPN'))
+        syntax_file.write("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:\n")
+        for chunk, frequency in common_proper_noun_chunks_ai.most_common(10):
+            syntax_file.write(f"{chunk}: {frequency}\n")
 
-    common_proper_noun_chunks_human = Counter(get_chunks(human_text, filter_root='PROPN'))
-    print("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:")
-    for chunk, frequency in common_proper_noun_chunks_human.most_common(10):
-        print(f"{chunk}: {frequency}")
+        common_proper_noun_chunks_human = Counter(get_chunks(human_text, filter_root='PROPN'))
+        syntax_file.write("\n10 Most Common Noun Chunks with Proper Noun Roots in ai text:\n")
+        for chunk, frequency in common_proper_noun_chunks_human.most_common(10):
+            syntax_file.write(f"{chunk}: {frequency}\n")
 
-    tags_ai = []
-    for word in ai_text:
-        tags_ai.append(word.pos_)
-    print("10 Most frequent POS tags in ai text: " +
-          str(count_tags(tags_ai)))
+        tags_ai = []
+        for word in ai_text:
+            tags_ai.append(word.pos_)
+        syntax_file.write("10 Most frequent POS tags in ai text: " +
+                          str(count_tags(tags_ai)) + "\n")
 
-    tags_human = []
-    for word in human_text:
-        tags_human.append(word.pos_)
-    print("10 Most frequent POS tags in human text: " +
-          str(count_tags(tags_human)))
+        tags_human = []
+        for word in human_text:
+            tags_human.append(word.pos_)
+        syntax_file.write("10 Most frequent POS tags in human text: " +
+                          str(count_tags(tags_human)) + "\n")
 
-    print("Most common specified dependency in ai text: " +
-          str(most_frequent_asked_dependency(ai_text, 'ADJ')))
+        syntax_file.write("Most common specified dependency in ai text: " +
+                          str(most_frequent_asked_dependency(ai_text, 'ADJ')) + "\n")
 
-    print("Most common specified dependency in human text: " +
-          str(most_frequent_asked_dependency(human_text, 'ADJ')))
+        syntax_file.write("Most common specified dependency in human text: " +
+                          str(most_frequent_asked_dependency(human_text, 'ADJ')) + "\n")
 
 
 if __name__ == '__main__':
