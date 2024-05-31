@@ -1,0 +1,14 @@
+Human articles
+Number of ambiguous words: 103409
+Number of unique synsets: 27097
+10 most common hypernyms in human articles: [('letter.n.02', 6754), ('time_period.n.01', 5296), ('nucleotide.n.01', 4830), ('metric_linear_unit.n.01', 4608), ('fat-soluble_vitamin.n.01', 4599), ('blood_group.n.01', 4599), ('purine.n.01', 4576), ('current_unit.n.01', 4565), ('metallic_element.n.01', 4411), ('chemical_element.n.01', 3915)]
+Amount of tokens in human articles that have no synsets: 77059
+Top 10 tokens without synsets in human articles: [('the', 8639), (',', 8574), ('.', 7051), ('to', 4523), ('', 4335), ('of', 4069), ('and', 3971), ('"', 3789), ("'s", 1957), ('that', 1909)]
+----------------------------------------------------------
+AI generated articles
+Number of ambiguous words: 94260
+Number of unique synsets: 24305
+10 most common hypernyms in AI text: [('letter.n.02', 5801), ('nucleotide.n.01', 4519), ('fat-soluble_vitamin.n.01', 4395), ('blood_group.n.01', 4377), ('metric_linear_unit.n.01', 4371), ('current_unit.n.01', 4353), ('purine.n.01', 4351), ('person.n.01', 3467), ('metallic_element.n.01', 3416), ('time_period.n.01', 2800)]
+Amount of tokens in AI articles that have no synsets: 74461
+Top 10 tokens without synsets in AI articles: [(',', 8126), ('.', 7864), ('the', 7519), ('"', 5352), ('', 4905), ('to', 4581), ('and', 4460), ('of', 4129), ("'s", 2226), ('The', 2007)]
+----------------------------------------------------------
