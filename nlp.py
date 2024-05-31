@@ -6,25 +6,35 @@ from morphology import *
 from syntax import *
 
 
-def syntax(text_ai, syntax_file):
-    common_chunks_ai = Counter(get_chunks(text_ai))
-    syntax_file.write("10 Most Common Noun Chunks in text:\n")
-    for chunk, frequency in common_chunks_ai.most_common(10):
+def syntax(text, syntax_file):
+    common_chunks = Counter(get_chunks(text))
+    syntax_file.write(f"10 Most Common Noun Chunks:\n")
+    for chunk, frequency in common_chunks.most_common(10):
         syntax_file.write(f"{chunk}: {frequency}\n")
 
-    common_proper_noun_chunks_ai = Counter(get_chunks(text_ai, filter_root='PROPN'))
-    syntax_file.write("\n10 Most Common Noun Chunks with Proper Noun Roots in text:\n")
-    for chunk, frequency in common_proper_noun_chunks_ai.most_common(10):
+    common_proper_noun_chunks = Counter(get_chunks(text, filter_root='PROPN'))
+    syntax_file.write(f"\n10 Most Common Noun Chunks with Proper Noun Roots:\n")
+    for chunk, frequency in common_proper_noun_chunks.most_common(10):
         syntax_file.write(f"{chunk}: {frequency}\n")
 
-    tags_ai = []
-    for word in text_ai:
-        tags_ai.append(word.pos_)
-    syntax_file.write("10 Most frequent POS tags in text: " +
-                      str(count_tags(tags_ai)) + "\n")
+    tags = []
+    for word in text:
+        tags.append(word.pos_)
 
-    syntax_file.write("Most common specified dependency in text: " +
-                      str(most_frequent_asked_dependency(text_ai, 'ADJ')) + "\n")
+    most_frequent_tags, least_frequent_tags = count_tags(tags)
+    syntax_file.write(f"10 Most frequent POS tags: {most_frequent_tags}\n")
+    syntax_file.write(f"10 Least frequent POS tags: {least_frequent_tags}\n")
+
+    syntax_file.write(f"Number of unique POS tags: {count_unique_tags(tags)}\n")
+
+    syntax_file.write(f"Amount of stop words: {count_stop_words(text)}\n")
+    syntax_file.write(f"Average sentence length: {average_length(text)}\n")
+    syntax_file.write(f"Number of misspelled words: {count_misspelled_words(text)}\n")
+
+    syntax_file.write(f"Most common specified dependency: {most_frequent_asked_dependency(text, 'ADJ')}\n")
+
+    pos_avg_positions = pos_tags_distribution(text)
+    syntax_file.write(f"Average position of POS tags in sentences: {pos_avg_positions}\n")
 
     syntax_file.write("----------------------------------------------------------\n")
     syntax_file.write("\n")
