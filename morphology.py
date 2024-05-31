@@ -76,6 +76,18 @@ def count_tags(tags):
     return most_frequent
 
 
+def most_frequent_asked_dependency(text, dependency):
+    """Find the most frequent adjective in the given text"""
+    dependencies = Counter()
+    for token in text:
+        if token.pos_ == dependency:
+            dependencies[token.text] += 1
+
+    most_common_dependency = dependencies.most_common(1)
+
+    return dependency, most_common_dependency
+
+
 def get_chunks(doc, filter_root=None):
     """Get noun chunks from a spaCy document, optionally filtered by
     root token properties
@@ -154,6 +166,12 @@ def main():
         tags_human.append(word.pos_)
     print("10 Most frequent POS tags in human text: " +
           str(count_tags(tags_human)))
+
+    print("Most common specified dependency in ai text: " +
+          str(most_frequent_asked_dependency(ai_text, 'ADJ')))
+
+    print("Most common specified dependency in human text: " +
+          str(most_frequent_asked_dependency(human_text, 'ADJ')))
 
 
 if __name__ == '__main__':
