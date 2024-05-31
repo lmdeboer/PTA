@@ -1,4 +1,4 @@
-# Laura de Boer, Dertje Roggeveen, Roshana Vegter
+# Laura de Boer, Dertje Roggeveen, Roshana Vegter, Julian Paagman
 # Group 2
 # morphology.py
 
