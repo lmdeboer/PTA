@@ -1,4 +1,8 @@
-import nltk
+# Laura de Boer, Dertje Roggeveen, Roshana Vegter, Julian Paagman
+# Group 2
+# syntax.py
+
+
 from nltk.corpus import wordnet as wn
 from nltk.wsd import lesk
 from fastcoref import spacy_component

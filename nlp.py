@@ -1,84 +1,89 @@
-import json
-import spacy
+# Laura de Boer, Dertje Roggeveen, Roshana Vegter, Julian Paagman
+# Group 2
+# nlp.py
+
+from morphology import *
 from syntax import *
+from semantics import *
+from pragmatics import *
 
 
-def read_file(file_name):
-    """
-    Function which reads the json file, and appends each article to the list texts, as well as apply a spacy object
-    on the document.
-    :param file_name: Json file to be read
-    :return: text as a spacy object.
-    """
-    texts = []
-    with open(file_name, 'r', encoding='utf-8') as file:
-        lines = file.readlines()
-        # half of the files, could not process more due to character limit
-        for line in lines[:326]:
-            json_obj = json.loads(line.strip())
-            text = json_obj.get('text', '')
-            texts.append(text)
-
-    all_text = ' '.join(texts)
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(all_text)
-
-    return doc
-
-
-def stemming(text):
-    pass
-
-
-def lemmatization(text):
-    """
-    Function which lemmatizes the text.
-    :param text: Text to be lemmatized.
-    :return: Lemmatized text.
-    """
-
-    return [token.lemma_ for token in text]
-
-
-def tokenization(text):
-    """
-    Function which tokenizes the text.
-    :param text: Text to be tokenized.
-    :return: Tokenized text.
-    """
-
-    return [token.text.strip() for token in text]
-
-
-def syntax(text_ai, syntax_file):
-    common_chunks_ai = Counter(get_chunks(text_ai))
-    syntax_file.write("10 Most Common Noun Chunks in text:\n")
-    for chunk, frequency in common_chunks_ai.most_common(10):
+def syntax(text, syntax_file):
+    common_chunks = Counter(get_chunks(text))
+    syntax_file.write(f"10 Most Common Noun Chunks:\n")
+    for chunk, frequency in common_chunks.most_common(10):
         syntax_file.write(f"{chunk}: {frequency}\n")
 
-    common_proper_noun_chunks_ai = Counter(get_chunks(text_ai, filter_root='PROPN'))
-    syntax_file.write("\n10 Most Common Noun Chunks with Proper Noun Roots in text:\n")
-    for chunk, frequency in common_proper_noun_chunks_ai.most_common(10):
+    common_proper_noun_chunks = Counter(get_chunks(text, filter_root='PROPN'))
+    syntax_file.write(f"\n10 Most Common Noun Chunks with Proper Noun Roots:\n")
+    for chunk, frequency in common_proper_noun_chunks.most_common(10):
         syntax_file.write(f"{chunk}: {frequency}\n")
 
-    tags_ai = []
-    for word in text_ai:
-        tags_ai.append(word.pos_)
-    syntax_file.write("10 Most frequent POS tags in text: " +
-                      str(count_tags(tags_ai)) + "\n")
+    tags = []
+    for word in text:
+        tags.append(word.pos_)
 
-    syntax_file.write("Most common specified dependency in text: " +
-                      str(most_frequent_asked_dependency(text_ai, 'ADJ')) + "\n")
+    most_frequent_tags, least_frequent_tags = count_tags(tags)
+    syntax_file.write(f"10 Most frequent POS tags: {most_frequent_tags}\n")
+    syntax_file.write(f"10 Least frequent POS tags: {least_frequent_tags}\n")
+
+    syntax_file.write(f"Number of unique POS tags: {count_unique_tags(tags)}\n")
+
+    syntax_file.write(f"Amount of stop words: {count_stop_words(text)}\n")
+    syntax_file.write(f"Average sentence length: {average_length(text)}\n")
+    syntax_file.write(f"Number of misspelled words: {count_misspelled_words(text)}\n")
+
+    syntax_file.write(f"Most common specified dependency: {most_frequent_asked_dependency(text, 'ADJ')}\n")
+
+    pos_avg_positions = pos_tags_distribution(text)
+    syntax_file.write(f"Average position of POS tags in sentences: {pos_avg_positions}\n")
 
     syntax_file.write("----------------------------------------------------------\n")
     syntax_file.write("\n")
 
-def semantics(text):
-    pass
+
+def semantics(tokens, semantics_file, label):
+    ambiguous_words = count_ambiguous_words(tokens)
+    unique_synsets_count = unique_synsets(tokens)
+    hypernyms = get_noun_hypernyms(tokens)
+    most_common_hypernyms = common_hypernyms(hypernyms)
+    num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(tokens)
+
+    semantics_file.write(f"{label} articles\n")
+    semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
+    semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
+    semantics_file.write(f"10 most common hypernyms in {label} text: {most_common_hypernyms}\n")
+    semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_nouns_without_synsets}\n")
+    semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {nouns_without_synsets}\n")
+    semantics_file.write("----------------------------------------------------------\n")
 
 
-def pragmatic(text):
-    pass
+def pragmatic(human_text, ai_text, pf):
+    sorted_h_word_frequency, sorted_ai_word_frequency, human_polarity, human_subjectivity, ai_polarity, ai_subjectivity = sentiment_analysis_tb(
+    human_text, ai_text)
+    pf.write('Sentiment Analysis - SpacyTextBlob\n')
+    pf.write("\nHuman Polarity: " + str(human_polarity))
+    pf.write("\nAI Polarity: " + str(ai_polarity))
+    pf.write("\nHuman Subjectivity: " + str(human_subjectivity))
+    pf.write("\nAI Subjectivity: " + str(ai_subjectivity))
+    for frequency in sorted_h_word_frequency[:10]:
+        pf.write("\nMost frequent high-sentiment words in human text: " + frequency[0] + ":" + str(frequency[1]))
+    for frequency in sorted_ai_word_frequency[:10]:
+        pf.write("\nMost frequent high-sentiment words in AI text: " + frequency[0] + ":" + str(frequency[1]))
+
+    EnDF_AI, EnGF_AI, TraF_AI, EnDF_H, EnGF_H, TraF_H = discourse_analysis(human_text, ai_text)
+    pf.write('\n Discourse Features\n')
+    pf.write('\nHuman Entity Density Features: ' + str(EnDF_H))
+    pf.write('\nAI Entity Density Features: ' + str(EnDF_AI))
+    pf.write('\nHuman Entity Grid Features: ' + str(EnGF_H))
+    pf.write('\nAI Entity Grid Features: ' + str(EnGF_AI))
+    pf.write('\nHuman Readability Features: ' + str(TraF_H))
+    pf.write('\nAI Readability Features: ' + str(TraF_AI))
+
+    human_sentiment, ai_sentiment = sentiment_analysis_asent(human_text, ai_text)
+    pf.write('\nSentiment Analysis - Asent\n')
+    pf.write('Human sentiment: ' + str(human_sentiment))
+    pf.write('\nAI sentiment: ' + str(ai_sentiment))
 
 
 def main():
@@ -97,11 +102,13 @@ def main():
         syntax_file.write("Human articles\n")
         syntax(human_text, syntax_file)
 
-    semantics(human_text)
-    semantics(ai_text)
+    with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
+        semantics(ai_tokens, semantics_file, "Artificial")
+        semantics(human_tokens, semantics_file, "Human")
 
-    pragmatic(human_text)
-    pragmatic(ai_text)
+
+    with open('pragmatics.txt', 'w', encoding='utf-8') as pf: 
+        pragmatic(human_text, ai_text, pf)
 
 
 if __name__ == '__main__':
