@@ -5,6 +5,7 @@
 from morphology import *
 from syntax import *
 from semantics import *
+from pragmatics import *
 
 
 def syntax(text, syntax_file):
@@ -58,7 +59,31 @@ def semantics(tokens, semantics_file, label):
 
 
 def pragmatic(text):
-    pass
+    sorted_h_word_frequency, sorted_ai_word_frequency, human_polarity, human_subjectivity, ai_polarity, ai_subjectivity = sentiment_analysis_tb(
+    human_text, ai_text)
+    pf.write('Sentiment Analysis - SpacyTextBlob\n')
+    pf.write("\nHuman Polarity: " + str(human_polarity))
+    pf.write("\nAI Polarity: " + str(ai_polarity))
+    pf.write("\nHuman Subjectivity: " + str(human_subjectivity))
+    pf.write("\nAI Subjectivity: " + str(ai_subjectivity))
+    for frequency in sorted_h_word_frequency[:10]:
+        pf.write("\nMost frequent high-sentiment words in human text: " + frequency[0] + ":" + str(frequency[1]))
+    for frequency in sorted_ai_word_frequency[:10]:
+        pf.write("\nMost frequent high-sentiment words in AI text: " + frequency[0] + ":" + str(frequency[1]))
+
+    EnDF_AI, EnGF_AI, TraF_AI, EnDF_H, EnGF_H, TraF_H = discourse_analysis(human_text, ai_text)
+    pf.write('\n Discourse Features\n')
+    pf.write('\nHuman Entity Density Features: ' + str(EnDF_H))
+    pf.write('\nAI Entity Density Features: ' + str(EnDF_AI))
+    pf.write('\nHuman Entity Grid Features: ' + str(EnGF_H))
+    pf.write('\nAI Entity Grid Features: ' + str(EnGF_AI))
+    pf.write('\nHuman Readability Features: ' + str(TraF_H))
+    pf.write('\nAI Readability Features: ' + str(TraF_AI))
+
+    human_sentiment, ai_sentiment = sentiment_analysis_asent(human_text, ai_text)
+    pf.write('\nSentiment Analysis - Asent\n')
+    pf.write('Human sentiment: ' + str(human_sentiment))
+    pf.write('\nAI sentiment: ' + str(ai_sentiment))
 
 
 def main():
@@ -85,8 +110,8 @@ def main():
     semantics(human_text)
     semantics(ai_text)
 
-    pragmatic(human_text)
-    pragmatic(ai_text)
+    with open('pragmatics.txt', 'w', encoding='utf-8') as pf: 
+        pragmatic(human_text, ai_text, pf)
 
 
 if __name__ == '__main__':
