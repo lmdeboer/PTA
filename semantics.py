@@ -10,6 +10,8 @@ import spacy
 import json
 from collections import Counter
 
+nlp = spacy.load("en_core_web_sm")
+nlp.add_pipe("fastcoref")
 
 def unique_synsets(tokens):
     """
@@ -77,12 +79,13 @@ def count_tokens_without_synsets(tokens):
     tokens_without_synsets = []
     
     for token in tokens:
+        if isinstance(token, str):
         # Get synsets of tokens.
-        synsets = wn.synsets(token)
-        # If it has no synsets add to count and add token to the list.
-        if not synsets:
-            num_tokens_without_synsets += 1
-            tokens_without_synsets.append(token)
+            synsets = wn.synsets(token)
+            # If it has no synsets add to count and add token to the list.
+            if not synsets:
+                num_tokens_without_synsets += 1
+                tokens_without_synsets.append(token)
     
     # Count number of tokens without synsets
     total_count = num_tokens_without_synsets
@@ -90,26 +93,26 @@ def count_tokens_without_synsets(tokens):
     return total_count, common_tokens
 
 
-def count_named_entities(tokens):
+def count_named_entities(text):
     """
     Count the number of named entities per tag
     param: List of tokens.
     returns: a dictionary containing every named entity tag and its frequency
     """
     count = Counter()
-    for ent in tokens.ents:
+    for ent in text.ents:
         count[ent.label_] += 1
     return count
 
 
-def count_unique_entities(tokens):
+def count_unique_entities(text):
     """
     Counts the number of unique entities
     param: List of tokens.
     returns: The number of unique named entity tags
     """
     unique = []
-    for ent in tokens.ents:
+    for ent in text.ents:
         if ent not in unique:
             unique.append(ent)
     return len(unique)
@@ -122,6 +125,9 @@ def count_coreference(doc):
     returns: The number, average length and maximum length of clusters in the text
     """
     clusters = doc._.coref_clusters
+
+    if clusters is None:
+        return 0, 0, 0
 
     num_clust = len(clusters)
     total_chain_len = 0

@@ -42,15 +42,15 @@ def syntax(text, syntax_file):
     syntax_file.write("\n")
 
 
-def semantics(tokens, semantics_file, label):
+def semantics(tokens, semantics_file, label, text):
     ambiguous_words = count_ambiguous_words(tokens)
     unique_synsets_count = unique_synsets(tokens)
     hypernyms = get_noun_hypernyms(tokens)
     most_common_hypernyms = common_hypernyms(hypernyms)
-    num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(tokens)
-    num_named_entities = count_named_entities(tokens)
-    num_unique_entities = count_unique_entities(tokens)
-    num_clusters, avg_chain_len, max_chain_len = count_coreference(tokens)
+    num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(text)
+    num_named_entities = count_named_entities(text)
+    num_unique_entities = count_unique_entities(text)
+    num_clusters, avg_chain_len, max_chain_len = count_coreference(text)
     num_human_nouns_without_synsets, human_nouns_without_synsets = count_tokens_without_synsets(tokens)
 
     semantics_file.write(f"{label} articles\n")
@@ -112,11 +112,11 @@ def main():
         syntax(human_text, syntax_file)
 
     with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
-        semantics(ai_tokens, semantics_file, "Artificial")
-        semantics(human_tokens, semantics_file, "Human")
+        semantics(ai_tokens, semantics_file, "Artificial", ai_text)
+        semantics(human_tokens, semantics_file, "Human", human_text)
 
 
-    with open('pragmatics.txt', 'w', encoding='utf-8') as pf: 
+    with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
         pragmatic(human_text, ai_text, pf)
 
 
