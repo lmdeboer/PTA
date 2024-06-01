@@ -48,6 +48,10 @@ def semantics(tokens, semantics_file, label):
     hypernyms = get_noun_hypernyms(tokens)
     most_common_hypernyms = common_hypernyms(hypernyms)
     num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(tokens)
+    num_named_entities = count_named_entities(tokens)
+    num_unique_entities = count_unique_entities(tokens)
+    num_clusters, avg_chain_len, max_chain_len = count_coreference(tokens)
+    num_human_nouns_without_synsets, human_nouns_without_synsets = count_tokens_without_synsets(tokens)
 
     semantics_file.write(f"{label} articles\n")
     semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
@@ -55,6 +59,11 @@ def semantics(tokens, semantics_file, label):
     semantics_file.write(f"10 most common hypernyms in {label} text: {most_common_hypernyms}\n")
     semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_nouns_without_synsets}\n")
     semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {nouns_without_synsets}\n")
+    semantics_file.write(f"Number of named entities: {num_named_entities}\n")
+    semantics_file.write(f"Number of unique named entities: {num_unique_entities}\n")
+    semantics_file.write(f"Number of coreference clusters: {num_clusters}\n")
+    semantics_file.write(f"Average length of a coreference chain: {avg_chain_len}\n")
+    semantics_file.write(f"Max length of a coreference chain: {max_chain_len}\n")
     semantics_file.write("----------------------------------------------------------\n")
 
 
