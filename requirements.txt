@@ -1,0 +1,8 @@
+spacy
+json
+nlkt
+fastcoref
+spellchecker
+asent
+lingfeat
+spacytextblob
