@@ -58,7 +58,7 @@ This file contains functions to perform semantic analysis, such as counting uniq
 This function cointains functions to perform pragmatic analysis such as sentiment analysis and discourse features.
 
 ### nlp.py
-This is the main script that performs the NLP analysis by calling the functions from different modules, and writing the results to files for each part.
+This is the main script that performs the NLP analysis by calling the functions from different modules, and writing the results to files.
 
 ## Authors
 Laura de Boer \
