@@ -7,6 +7,7 @@ from nltk.corpus import wordnet as wn
 from nltk.wsd import lesk
 from fastcoref import spacy_component
 from collections import Counter
+import spacy
 
 nlp = spacy.load("en_core_web_sm")
 nlp.add_pipe("fastcoref")
