@@ -1,9 +1,11 @@
 import nltk
 from nltk.corpus import wordnet as wn
 from nltk.wsd import lesk
+from fastcoref import spacy_component
 import spacy
 import json
 from collections import Counter
+
 
 
 def read_file(file_name):
@@ -24,6 +26,7 @@ def read_file(file_name):
 
     all_text = ' '.join(texts)
     nlp = spacy.load("en_core_web_sm")
+    nlp.add_pipe("fastcoref")
     doc = nlp(all_text)
     return doc
 
@@ -125,9 +128,55 @@ def count_tokens_without_synsets(tokens):
     return total_count, common_tokens
 
 
+def count_named_entities(tokens):
+    """
+    Count the number of named entities per tag
+    param: List of tokens.
+    returns: a dictionary containing every named entity tag and its frequency
+    """
+    count = Counter()
+    for ent in tokens.ents:
+        count[ent.label_] += 1
+    return count
+
+
+def count_unique_entities(tokens):
+    """
+    Counts the number of unique entities
+    param: List of tokens.
+    returns: The number of unique named entity tags
+    """
+    unique = []
+    for ent in tokens.ents:
+        if ent not in unique:
+            unique.append(ent)
+    return len(unique)
+
+
+def count_coreference(doc):
+    """
+    Counts the number of coreference clusters, average length of a cluster and maximum length of a cluster in the text
+    param: A text.
+    returns: The number, average length and maximum length of clusters in the text
+    """
+    clusters = doc._.coref_clusters
+
+    num_clust = len(clusters)
+    total_chain_len = 0
+    max_chain_len = 0
+
+    for cluster in clusters:
+        chain_len = len(cluster)
+        total_chain_len += chain_len
+        max_chain_len = max(max_chain_len, chain_len)
+
+    avg_chain_len= total_chain_len / num_clust if num_clust > 0 else 0
+
+    return num_clust, avg_chain_len, max_chain_len
+
+
 def main():
     nltk.download('wordnet')
-    nlp = spacy.load("en_core_web_sm")
     
     # Files
     human_file = 'human.jsonl'
@@ -143,6 +192,9 @@ def main():
     human_unique_synsets = unique_synsets(human_tokens)
     human_hypernyms = get_noun_hypernyms(human_tokens)
     human_most_common_hypernyms = common_hypernyms(human_hypernyms)
+    human_num_named_entities = count_named_entities(human_tokens)
+    human_num_unique_entities = count_unique_entities(human_tokens)
+    human_num_clusters, human_avg_chain_len, human_max_chain_len = count_coreference(human_tokens)
     num_human_nouns_without_synsets, human_nouns_without_synsets = count_tokens_without_synsets(human_tokens)
     
     # Process AI articles
@@ -155,6 +207,9 @@ def main():
     ai_unique_synsets = unique_synsets(ai_tokens)
     ai_hypernyms = get_noun_hypernyms(ai_tokens)
     ai_most_common_hypernyms = common_hypernyms(ai_hypernyms)
+    ai_num_named_entities = count_named_entities(ai_tokens)
+    ai_num_unique_entities = count_unique_entities(ai_tokens)
+    ai_num_clusters, ai_avg_chain_len, ai_max_chain_len = count_coreference(ai_tokens)
     num_ai_nouns_without_synsets, ai_nouns_without_synsets = count_tokens_without_synsets(ai_tokens)
 
 
@@ -166,6 +221,11 @@ def main():
         semantics_file.write(f"10 most common hypernyms in human articles: {human_most_common_hypernyms}\n")
         semantics_file.write(f"Amount of tokens in human articles that have no synsets: {num_human_nouns_without_synsets}\n")
         semantics_file.write(f"Top 10 tokens without synsets in human articles: {human_nouns_without_synsets}\n")
+        semantics_file.write(f"Number of named entities: {human_num_named_entities}\n")
+        semantics_file.write(f"Number of unique named entities: {human_num_unique_entities}\n")
+        semantics_file.write(f"Number of coreference clusters: {human_num_clusters}\n")
+        semantics_file.write(f"Average length of a coreference chain: {human_avg_chain_len}\n")
+        semantics_file.write(f"Max length of a coreference chain: {human_max_chain_len}\n")
         semantics_file.write("----------------------------------------------------------\n")
         
         # Write AI articles results to file.
@@ -175,6 +235,11 @@ def main():
         semantics_file.write(f"10 most common hypernyms in AI text: {ai_most_common_hypernyms}\n")
         semantics_file.write(f"Amount of tokens in AI articles that have no synsets: {num_ai_nouns_without_synsets}\n")
         semantics_file.write(f"Top 10 tokens without synsets in AI articles: {ai_nouns_without_synsets}\n")
+        semantics_file.write(f"Number of named entities: {ai_num_named_entities}\n")
+        semantics_file.write(f"Number of unique named entities: {ai_num_unique_entities}\n")
+        semantics_file.write(f"Number of coreference clusters: {ai_num_clusters}\n")
+        semantics_file.write(f"Average length of a coreference chain: {ai_avg_chain_len}\n")
+        semantics_file.write(f"Max length of a coreference chain: {ai_max_chain_len}\n")
         semantics_file.write("----------------------------------------------------------\n")
 
 if __name__ == '__main__':
