@@ -1,19 +1,18 @@
 # Laura de Boer, Dertje Roggeveen, Roshana Vegter, Julian Paagman
 # Group 2
-# syntax.py
+# semantics.py
 
 
 from nltk.corpus import wordnet as wn
 from nltk.wsd import lesk
 from fastcoref import spacy_component
-import spacy
-import json
 from collections import Counter
 
 
+# Author Roshana Vegter
 def unique_synsets(tokens):
     """
-    Count the amount of unique synsets in the token list.
+    This functions counts the amount of unique synsets in a list of tokens.
     :param tokens: List of tokens.
     :return: Number of unique synsets.
     """
@@ -26,9 +25,10 @@ def unique_synsets(tokens):
     return len(synsets_set)
 
 
+# Author Roshana Vegter
 def get_noun_hypernyms(tokens):
     """
-    Get noun hypernyms for a given list of tokens.
+    This function gets the hypernyms out of a list of tokens.
     :param tokens: List of tokens.
     :return: List of hypernyms.
     """
@@ -40,9 +40,10 @@ def get_noun_hypernyms(tokens):
     return hypernyms
 
 
+# Author Roshana Vegter
 def common_hypernyms(hypernyms):
     """
-    Find the 10 most common hypernyms in the given list of tokens.
+    This function finds the 10 most common hypernyms in a list of tokens.
     :param tokens: List of tokens.
     :return: List of the 10 most common hypernyms.
     """
@@ -52,9 +53,10 @@ def common_hypernyms(hypernyms):
     return hypernym_counter.most_common(10)
 
 
+# Author Roshana Vegter
 def count_ambiguous_words(tokens):
     """
-    Count the number of ambiguous words in the list of tokens.
+    This function counts the amount of ambiguous words in a list of tokens.
     :param tokens: List of tokens.
     :return: Number of ambiguous words.
     """
@@ -66,16 +68,18 @@ def count_ambiguous_words(tokens):
     return num_ambiguous
 
 
+# Author Roshana Vegter
 def count_tokens_without_synsets(tokens):
     """
-    Count the number of tokens that have no synsets in WordNet,
-    and return the total count and the 10 most common tokens without synsets.
+    This function counts the amount of tokens that have no synsets in WordNet,
+    and returns te total count and the 10 most common words without synsets.
     :param tokens: List of tokens.
-    :return: Total count of tokens without synsets and the 10 most common tokens without synsets.
+    :return: Amount of tokens without synsets and the 10 most common tokens
+    without synsets.
     """
     num_tokens_without_synsets = 0
     tokens_without_synsets = []
-    
+
     for token in tokens:
         # Get synsets of tokens.
         synsets = wn.synsets(token)
@@ -83,7 +87,7 @@ def count_tokens_without_synsets(tokens):
         if not synsets:
             num_tokens_without_synsets += 1
             tokens_without_synsets.append(token)
-    
+
     # Count number of tokens without synsets
     total_count = num_tokens_without_synsets
     common_tokens = Counter(tokens_without_synsets).most_common(10)
@@ -117,9 +121,11 @@ def count_unique_entities(tokens):
 
 def count_coreference(doc):
     """
-    Counts the number of coreference clusters, average length of a cluster and maximum length of a cluster in the text
+    Counts the number of coreference clusters, average length of a cluster
+    and maximum length of a cluster in the text
     param: A text.
-    returns: The number, average length and maximum length of clusters in the text
+    returns: The number, average length and maximum length of clusters
+    in the text
     """
     clusters = doc._.coref_clusters
 
@@ -132,7 +138,6 @@ def count_coreference(doc):
         total_chain_len += chain_len
         max_chain_len = max(max_chain_len, chain_len)
 
-    avg_chain_len= total_chain_len / num_clust if num_clust > 0 else 0
+    avg_chain_len = total_chain_len / num_clust if num_clust > 0 else 0
 
     return num_clust, avg_chain_len, max_chain_len
-
