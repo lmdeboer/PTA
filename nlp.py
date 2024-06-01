@@ -58,7 +58,7 @@ def semantics(tokens, semantics_file, label):
     semantics_file.write("----------------------------------------------------------\n")
 
 
-def pragmatic(text):
+def pragmatic(human_text, ai_text, pf):
     sorted_h_word_frequency, sorted_ai_word_frequency, human_polarity, human_subjectivity, ai_polarity, ai_subjectivity = sentiment_analysis_tb(
     human_text, ai_text)
     pf.write('Sentiment Analysis - SpacyTextBlob\n')
@@ -106,9 +106,6 @@ def main():
         semantics(ai_tokens, semantics_file, "Artificial")
         semantics(human_tokens, semantics_file, "Human")
 
-
-    semantics(human_text)
-    semantics(ai_text)
 
     with open('pragmatics.txt', 'w', encoding='utf-8') as pf: 
         pragmatic(human_text, ai_text, pf)
