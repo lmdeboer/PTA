@@ -4,6 +4,7 @@
 
 from morphology import *
 from syntax import *
+from semantics import *
 
 
 def syntax(text, syntax_file):
@@ -40,8 +41,20 @@ def syntax(text, syntax_file):
     syntax_file.write("\n")
 
 
-def semantics(text):
-    pass
+def semantics(tokens, semantics_file, label):
+    ambiguous_words = count_ambiguous_words(tokens)
+    unique_synsets_count = unique_synsets(tokens)
+    hypernyms = get_noun_hypernyms(tokens)
+    most_common_hypernyms = common_hypernyms(hypernyms)
+    num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(tokens)
+
+    semantics_file.write(f"{label} articles\n")
+    semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
+    semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
+    semantics_file.write(f"10 most common hypernyms in {label} text: {most_common_hypernyms}\n")
+    semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_nouns_without_synsets}\n")
+    semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {nouns_without_synsets}\n")
+    semantics_file.write("----------------------------------------------------------\n")
 
 
 def pragmatic(text):
@@ -63,6 +76,11 @@ def main():
         syntax(ai_text, syntax_file)
         syntax_file.write("Human articles\n")
         syntax(human_text, syntax_file)
+
+    with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
+        semantics(ai_tokens, semantics_file, "Artificial")
+        semantics(human_tokens, semantics_file, "Human")
+
 
     semantics(human_text)
     semantics(ai_text)
