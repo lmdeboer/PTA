@@ -67,32 +67,45 @@ def semantics(tokens, semantics_file, label, text):
     semantics_file.write("----------------------------------------------------------\n")
 
 
-def pragmatic(human_text, ai_text, pf):
-    sorted_h_word_frequency, sorted_ai_word_frequency, human_polarity, human_subjectivity, ai_polarity, ai_subjectivity = sentiment_analysis_tb(
-    human_text, ai_text)
+def pragmatic(text, pf):
+    sorted_word_frequency, polarity, subjectivity, evaluation = sentiment_analysis_tb(text)
     pf.write('Sentiment Analysis - SpacyTextBlob\n')
-    pf.write("\nHuman Polarity: " + str(human_polarity))
-    pf.write("\nAI Polarity: " + str(ai_polarity))
-    pf.write("\nHuman Subjectivity: " + str(human_subjectivity))
-    pf.write("\nAI Subjectivity: " + str(ai_subjectivity))
-    for frequency in sorted_h_word_frequency[:10]:
-        pf.write("\nMost frequent high-sentiment words in human text: " + frequency[0] + ":" + str(frequency[1]))
-    for frequency in sorted_ai_word_frequency[:10]:
-        pf.write("\nMost frequent high-sentiment words in AI text: " + frequency[0] + ":" + str(frequency[1]))
+    pf.write("\n Polarity: " + str(polarity))
+    pf.write("\n Subjectivity: " + str(subjectivity) + '\n\n')
+    for frequency in sorted_word_frequency[:10]:
+        pf.write("\nMost frequent high-sentiment words: " + frequency[0] + ": " + str(frequency[1]))
+    if evaluation:
+        pf.write("\n -> Evaluation: AI-generated text")
+    else:
+        pf.write("\n -> Evaluation: Human-generated text")
 
-    EnDF_AI, EnGF_AI, TraF_AI, EnDF_H, EnGF_H, TraF_H = discourse_analysis(human_text, ai_text)
-    pf.write('\n Discourse Features\n')
-    pf.write('\nHuman Entity Density Features: ' + str(EnDF_H))
-    pf.write('\nAI Entity Density Features: ' + str(EnDF_AI))
-    pf.write('\nHuman Entity Grid Features: ' + str(EnGF_H))
-    pf.write('\nAI Entity Grid Features: ' + str(EnGF_AI))
-    pf.write('\nHuman Readability Features: ' + str(TraF_H))
-    pf.write('\nAI Readability Features: ' + str(TraF_AI))
+    high_sentiment_ratio, evaluation_pos_sents, evaluation_neg_sents, positive_sents_perc, negative_sents_perc, pos_neg_ratio = sentiment_ratios(text)
+    pf.write("\n\nHigh Sentiment Sentences Percentage: " + str(high_sentiment_ratio))
+    pf.write("\n\nPositive Sentences Percentage: " + str(positive_sents_perc))
+    if evaluation_pos_sents:
+        pf.write("\n -> Evaluation: AI-generated text")
+    else:
+        pf.write("\n -> Evaluation: Human-generated text")
+    pf.write("\n\nNegative Sentences Percentage: " + str(negative_sents_perc))
+    if evaluation_neg_sents:
+        pf.write("\n -> Evaluation: AI-generated text")
+    else:
+        pf.write("\n -> Evaluation: Human-generated text\n")
+    pf.write("\n\nPositive Negative Ratio: " + str(pos_neg_ratio))
 
-    human_sentiment, ai_sentiment = sentiment_analysis_asent(human_text, ai_text)
-    pf.write('\nSentiment Analysis - Asent\n')
-    pf.write('Human sentiment: ' + str(human_sentiment))
-    pf.write('\nAI sentiment: ' + str(ai_sentiment))
+    polarity, evaluation = sentiment_analysis_asent(text)
+    pf.write('\n\nSentiment Analysis - Asent\n')
+    pf.write('\nSentiment: ' + str(polarity))
+    if evaluation:
+        pf.write("\n -> Evaluation: AI-generated text")
+    else:
+        pf.write("\n -> Evaluation: Human-generated text")
+
+    EnGF, TraF = discourse_analysis(text)
+    pf.write('\n\n Discourse Features\n')
+    pf.write('\nEntity Grid Features (including local coherence scores): ' + str(EnGF))
+    pf.write('\nReadability Features: ' + str(TraF))
+    pf.write("\n----------------------------------------------------------\n")
 
 
 def main():
@@ -115,9 +128,11 @@ def main():
         semantics(ai_tokens, semantics_file, "Artificial", ai_text)
         semantics(human_tokens, semantics_file, "Human", human_text)
 
-
     with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
-        pragmatic(human_text, ai_text, pf)
+        pf.write('Human articles\n\n')
+        pragmatic(human_text, pf)
+        pf.write('\n\nAI articles\n\n')
+        pragmatic(ai_text, pf)
 
 
 if __name__ == '__main__':

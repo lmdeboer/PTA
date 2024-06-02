@@ -1,38 +1,82 @@
+Human articles
+
 Sentiment Analysis - SpacyTextBlob
 
-Human Polarity: 0.08313006386206383
-AI Polarity: 0.08984335135060333
-Human Subjectivity: 0.4170007589447586
-AI Subjectivity: 0.44750496217631486
-Most frequent high-sentiment words in human text: best:13
-Most frequent high-sentiment words in human text: very:7
-Most frequent high-sentiment words in human text: devastating:4
-Most frequent high-sentiment words in human text: worst:4
-Most frequent high-sentiment words in human text: awesome:3
-Most frequent high-sentiment words in human text: incredibly:2
-Most frequent high-sentiment words in human text: brutal:2
-Most frequent high-sentiment words in human text: awful:2
-Most frequent high-sentiment words in human text: horrific:2
-Most frequent high-sentiment words in human text: bad:2
-Most frequent high-sentiment words in AI text: best:12
-Most frequent high-sentiment words in AI text: devastating:11
-Most frequent high-sentiment words in AI text: very:6
-Most frequent high-sentiment words in AI text: greatest:6
-Most frequent high-sentiment words in AI text: legendary:5
-Most frequent high-sentiment words in AI text: incredible:4
-Most frequent high-sentiment words in AI text: happy:2
-Most frequent high-sentiment words in AI text: incredibly:2
-Most frequent high-sentiment words in AI text: ruthless:2
-Most frequent high-sentiment words in AI text: brilliant:2
+ Polarity: 0.07043109109795989
+ Subjectivity: 0.41226873308873146
 
-Discourse Features
-Human Entity Density Features: {'to_EntiM_C': 5482, 'as_EntiM_C': 2.2851187994997915, 'at_EntiM_C': 0.1341588762175126, 'to_UEnti_C': 1615, 'as_UEnti_C': 0.673197165485619, 'at_UEnti_C': 0.039523273457001615}
-AI Entity Density Features: {'to_EntiM_C': 4466, 'as_EntiM_C': 1.8206278026905829, 'at_EntiM_C': 0.1191791423158007, 'to_UEnti_C': 1360, 'as_UEnti_C': 0.5544231553200163, 'at_UEnti_C': 0.03629279748085288}
-Human Entity Grid Features: {'ra_SSTo_C': 0.0, 'ra_SOTo_C': 0.0, 'ra_SXTo_C': 0.0, 'ra_SNTo_C': 1.4876001237527738e-05, 'ra_OSTo_C': 0.0, 'ra_OOTo_C': 0.0, 'ra_OXTo_C': 0.0, 'ra_ONTo_C': 3.101597643641404e-05, 'ra_XSTo_C': 0.0, 'ra_XOTo_C': 0.0, 'ra_XXTo_C': 0.0, 'ra_XNTo_C': 4.0252709230957404e-05, 'ra_NSTo_C': 1.4876001237527738e-05, 'ra_NOTo_C': 3.111320520267239e-05, 'ra_NXTo_C': 4.0252709230957404e-05, 'ra_NNTo_C': 0.999827613397424, 'LoCohPA_S': 0.8003334722801168, 'LoCohPW_S': 0.8003334722801168, 'LoCohPU_S': 2.6832013338891203, 'LoCoDPA_S': 0.007852211550969159, 'LoCoDPW_S': 0.007852211550969159, 'LoCoDPU_S': 0.027334529476231915}
-AI Entity Grid Features: {'ra_SSTo_C': 0.0, 'ra_SOTo_C': 0.0, 'ra_SXTo_C': 0.0, 'ra_SNTo_C': 1.8596037633250228e-05, 'ra_OSTo_C': 0.0, 'ra_OOTo_C': 0.0, 'ra_OXTo_C': 0.0, 'ra_ONTo_C': 3.238275518893574e-05, 'ra_XSTo_C': 0.0, 'ra_XOTo_C': 0.0, 'ra_XXTo_C': 0.0, 'ra_XNTo_C': 4.6810715421629884e-05, 'ra_NSTo_C': 1.8596037633250228e-05, 'ra_NOTo_C': 3.238275518893574e-05, 'ra_NXTo_C': 4.6703841642128444e-05, 'ra_NNTo_C': 0.9998045278572919, 'LoCohPA_S': 0.852017937219731, 'LoCohPW_S': 0.852017937219731, 'LoCohPU_S': 3.0464737056665308, 'LoCoDPA_S': 0.0099473760355872, 'LoCoDPW_S': 0.0099473760355872, 'LoCoDPU_S': 0.036183758526140745}
-Human Readability Features: {'FleschG_S': 14.023886852950024, 'AutoRea_S': 14.542122082992297, 'ColeLia_S': 1.1258159999999968, 'SmogInd_S': 17.88854381999832, 'Gunning_S': 10.299916631929971, 'LinseaW_S': 11.799916631929971}
-AI Readability Features: {'FleschG_S': 14.915308747532634, 'AutoRea_S': 15.848458804022822, 'ColeLia_S': -1.026755999999999, 'SmogInd_S': 17.832554500127006, 'Gunning_S': 9.974724826742763, 'LinseaW_S': 11.474724826742763}
+
+Most frequent high-sentiment words: best: 34
+Most frequent high-sentiment words: very: 16
+Most frequent high-sentiment words: worst: 14
+Most frequent high-sentiment words: devastating: 8
+Most frequent high-sentiment words: greatest: 8
+Most frequent high-sentiment words: incredible: 7
+Most frequent high-sentiment words: brutal: 6
+Most frequent high-sentiment words: awful: 6
+Most frequent high-sentiment words: terrible: 6
+Most frequent high-sentiment words: excellent: 6
+ -> Evaluation: Human-generated text
+
+High Sentiment Sentences Percentage: 0.00486815415821501
+
+Positive Sentences Percentage: 0.7537525354969574
+ -> Evaluation: Human-generated text
+
+Negative Sentences Percentage: 0.41839080459770117
+ -> Evaluation: Human-generated text
+
+
+Positive Negative Ratio: 1.801551389786684
 
 Sentiment Analysis - Asent
-Human sentiment: neg=0.062 neu=0.563 pos=0.066 compound=-0.0003 n_sentences=2398
-AI sentiment: neg=0.074 neu=0.615 pos=0.089 compound=0.0282 n_sentences=2452
+
+Sentiment: neg=0.065 neu=0.565 pos=0.061 compound=-0.0278 n_sentences=7395
+ -> Evaluation: Human-generated text
+
+ Discourse Features
+
+Entity Grid Features (including local coherence scores): {'ra_SSTo_C': 0.0, 'ra_SOTo_C': 0.0, 'ra_SXTo_C': 0.0, 'ra_SNTo_C': 1.4876001237527738e-05, 'ra_OSTo_C': 0.0, 'ra_OOTo_C': 0.0, 'ra_OXTo_C': 0.0, 'ra_ONTo_C': 3.101597643641404e-05, 'ra_XSTo_C': 0.0, 'ra_XOTo_C': 0.0, 'ra_XXTo_C': 0.0, 'ra_XNTo_C': 4.0252709230957404e-05, 'ra_NSTo_C': 1.4876001237527738e-05, 'ra_NOTo_C': 3.111320520267239e-05, 'ra_NXTo_C': 4.0252709230957404e-05, 'ra_NNTo_C': 0.999827613397424, 'LoCohPA_S': 0.8003334722801168, 'LoCohPW_S': 0.8003334722801168, 'LoCohPU_S': 2.6832013338891203, 'LoCoDPA_S': 0.007852211550969159, 'LoCoDPW_S': 0.007852211550969159, 'LoCoDPU_S': 0.027334529476231915}
+Readability Features: {'FleschG_S': 14.023886852950024, 'AutoRea_S': 14.542122082992297, 'ColeLia_S': 1.1258159999999968, 'SmogInd_S': 17.88854381999832, 'Gunning_S': 10.299916631929971, 'LinseaW_S': 11.799916631929971}
+----------------------------------------------------------
+
+
+AI articles
+
+Sentiment Analysis - SpacyTextBlob
+
+ Polarity: 0.0775139681323367
+ Subjectivity: 0.44006304858178485
+
+
+Most frequent high-sentiment words: devastating: 36
+Most frequent high-sentiment words: best: 35
+Most frequent high-sentiment words: greatest: 17
+Most frequent high-sentiment words: legendary: 12
+Most frequent high-sentiment words: very: 10
+Most frequent high-sentiment words: incredible: 9
+Most frequent high-sentiment words: horrific: 6
+Most frequent high-sentiment words: worst: 5
+Most frequent high-sentiment words: beautiful: 4
+Most frequent high-sentiment words: brutal: 4
+ -> Evaluation: AI-generated text
+
+High Sentiment Sentences Percentage: 0.008002000500125032
+
+Positive Sentences Percentage: 0.6387846961740435
+ -> Evaluation: AI-generated text
+
+Negative Sentences Percentage: 0.32983245811452866
+ -> Evaluation: AI-generated text
+
+Positive Negative Ratio: 1.9366944655041698
+
+Sentiment Analysis - Asent
+
+Sentiment: neg=0.078 neu=0.621 pos=0.085 compound=0.0066 n_sentences=7998
+ -> Evaluation: AI-generated text
+
+ Discourse Features:
+Entity Grid Features (including local coherence scores): {'ra_SSTo_C': 0.0, 'ra_SOTo_C': 0.0, 'ra_SXTo_C': 0.0, 'ra_SNTo_C': 1.8596037633250228e-05, 'ra_OSTo_C': 0.0, 'ra_OOTo_C': 0.0, 'ra_OXTo_C': 0.0, 'ra_ONTo_C': 3.238275518893574e-05, 'ra_XSTo_C': 0.0, 'ra_XOTo_C': 0.0, 'ra_XXTo_C': 0.0, 'ra_XNTo_C': 4.6810715421629884e-05, 'ra_NSTo_C': 1.8596037633250228e-05, 'ra_NOTo_C': 3.238275518893574e-05, 'ra_NXTo_C': 4.6703841642128444e-05, 'ra_NNTo_C': 0.9998045278572919, 'LoCohPA_S': 0.852017937219731, 'LoCohPW_S': 0.852017937219731, 'LoCohPU_S': 3.0464737056665308, 'LoCoDPA_S': 0.0099473760355872, 'LoCoDPW_S': 0.0099473760355872, 'LoCoDPU_S': 0.036183758526140745}
+Readability Features: {'FleschG_S': 14.915308747532634, 'AutoRea_S': 15.848458804022822, 'ColeLia_S': -1.026755999999999, 'SmogInd_S': 17.832554500127006, 'Gunning_S': 9.974724826742763, 'LinseaW_S': 11.474724826742763}
+----------------------------------------------------------
