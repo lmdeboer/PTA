@@ -8,7 +8,7 @@
 - [Authors](#authors)
 
 ## Introduction
-In this project we analyze and compare human written articles and AI generated articles using NLP. In the analysis we cover syntax, semantics and pragmatics.
+In this project we created a program that reads articles and determines if it was written by a human or if it was AI generated.
 
 ## Requirements
 The following libraries are required for the files to run:
@@ -58,10 +58,12 @@ This file contains functions to perform semantic analysis, such as counting uniq
 This function cointains functions to perform pragmatic analysis such as sentiment analysis and discourse features.
 
 ### nlp.py
-This is the main script that performs the NLP analysis by calling the functions from different modules, and writing the results to files.
+This is the main script that performs the NLP analysis by calling the functions from different modules, and writing the results from the syntax, semantics and pragmatic analysis to the corresponding files. It also contains the function that does the final evaluation on the articles, determining if it was written by a human or AI generated.
 
 ## Authors
 Laura de Boer \
 Dertje van Roggeveen\
 Julian Paagman\
-Roshana Vegter
+Roshana Vegter\
+\
+README.md is written by Roshana Vegter

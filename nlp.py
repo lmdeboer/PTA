@@ -60,6 +60,7 @@ def syntax(text, syntax_file):
 
 
 def semantics(tokens, semantics_file, label, text):
+    # Author Roshana Vegter
     semantics_file.write(f"{label} articles\n")
     ambiguous_words = count_ambiguous_words(tokens)
     semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
@@ -70,7 +71,6 @@ def semantics(tokens, semantics_file, label, text):
     else:
         semantics_file.write("-> Evaluation: AI-generated text\n")
 
-
     num_tokens_without_synsets, tokens_without_synsets, synset_eval = count_tokens_without_synsets(tokens)
     semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_tokens_without_synsets}\n")
     semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {tokens_without_synsets}\n")
@@ -78,7 +78,6 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
         semantics_file.write("-> Evaluation: AI-generated text\n")
-
 
     unique_synsets_count = unique_synsets(tokens)
     semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
@@ -96,7 +95,7 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
         semantics_file.write("-> Evaluation: AI-generated text\n")
-
+    # End part Roshana Vegter
 
     num_named_entities = count_named_entities(text)
     num_unique_entities = count_unique_entities(text)
@@ -120,6 +119,7 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write('\n\n Final Evaluation: Human-generated text')
 
     return final_evaluation
+
 
 def pragmatic(text, pf):
     sorted_word_frequency, polarity, subjectivity, evaluation = sentiment_analysis_tb(text)
@@ -216,6 +216,7 @@ def main():
 
         ef.write('\n\n2nd file articles: \n\n')
         final_evaluation(ev_syntax_h, ev_semantics_h, ev_pragmatics_h, ef)
+
 
 if __name__ == '__main__':
     main()
