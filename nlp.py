@@ -110,10 +110,10 @@ def pragmatic(text, pf):
         pf.write("\n -> Evaluation: Human-generated text\n")
     pf.write("\n\nPositive Negative Ratio: " + str(pos_neg_ratio))
 
-    polarity, evaluation = sentiment_analysis_asent(text)
+    polarity, evaluation_as = sentiment_analysis_asent(text)
     pf.write('\n\nSentiment Analysis - Asent\n')
     pf.write('\nSentiment: ' + str(polarity))
-    if evaluation:
+    if evaluation_as:
         pf.write("\n -> Evaluation: AI-generated text")
     else:
         pf.write("\n -> Evaluation: Human-generated text")
@@ -122,6 +122,25 @@ def pragmatic(text, pf):
     pf.write('\n\n Discourse Features\n')
     pf.write('\nReadability Features: ' + str(TraF))
     pf.write("\n----------------------------------------------------------\n")
+
+    evaluations = [evaluation, evaluation_pos_sents, evaluation_neg_sents, evaluation_as]
+    true_count = sum(evaluation == True for evaluation in evaluations)
+    if true_count > 2:
+        final_evaluation = True
+        pf.write('\n\n Final Evaluation: AI-generated text')
+    else:
+        final_evaluation = False
+        pf.write('\n\n Final Evaluation: Human-generated text')
+
+    return final_evaluation
+
+def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics):
+    evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
+    true_count = sum(evaluation == True for evaluation in evaluations)
+    if true_count > 2:
+        final_evaluation = True
+    else:
+        final_evaluation = False
 
 
 def main():
@@ -149,6 +168,8 @@ def main():
         pragmatic(human_text, pf)
         pf.write('\n\nAI articles\n\n')
         pragmatic(ai_text, pf)
+
+
 
 
 if __name__ == '__main__':

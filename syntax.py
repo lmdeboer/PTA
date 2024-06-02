@@ -76,7 +76,7 @@ def average_length(text):
     if len(sent_length) < 4.5:
         evaluation = True
 
-    return round(length / len(text), 2), evaluation
+    return round(sent_length / len(text), 2), evaluation
 
 
 def most_frequent_asked_dependency(text, dependency):
