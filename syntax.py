@@ -7,6 +7,7 @@ from collections import Counter
 from spellchecker import SpellChecker
 
 
+# Author: Dertje Roggeveen
 def count_tags(tags):
     """Count the frequency of each POS tag and return the
     10 most frequent tags
@@ -31,12 +32,14 @@ def count_tags(tags):
     return most_frequent, least_frequent
 
 
+# Author: Dertje Roggeveen
 def count_unique_tags(tags):
     unique_pos = len(Counter(tags))
 
     return unique_pos
 
 
+# Author: Dertje Roggeveen
 def count_stop_words(text):
     stop_words = 0
     words = [token.text for token in text if token.is_alpha]
@@ -56,6 +59,7 @@ def count_stop_words(text):
     return stop_words, evaluation
 
 
+# Author: Dertje Roggeveen
 def count_misspelled_words(text):
     spell = SpellChecker()
     words = [token.text for token in text if token.is_alpha]
@@ -72,6 +76,7 @@ def count_misspelled_words(text):
     return len(misspelled), evaluation
 
 
+# Author: Dertje Roggeveen
 def average_length(text):
     """Calculates the average length of sentences in a given SpaCy `Doc`."""
     sent_length = 0
@@ -87,6 +92,7 @@ def average_length(text):
     return round(sent_length / len(text), 2), evaluation
 
 
+# Author: Dertje Roggeveen
 def most_frequent_asked_dependency(text, dependency):
     """Find the most frequent adjective in the given text"""
     dependencies = Counter()
@@ -101,6 +107,7 @@ def most_frequent_asked_dependency(text, dependency):
     return dependency, most_common_dependency
 
 
+# Author: Dertje Roggeveen
 def get_chunks(doc, filter_root=None):
     """Get noun chunks from a spaCy document, optionally filtered by
     root token properties
@@ -118,6 +125,7 @@ def get_chunks(doc, filter_root=None):
     return chunks
 
 
+# Author: Dertje Roggeveen
 def extract_subject_pnoun_chunks(doc):
     """Extract noun chunks where the root token is a proper noun and
     the subject of the sentence.
@@ -141,6 +149,7 @@ def extract_subject_pnoun_chunks(doc):
     return subject_pnoun_chunks
 
 
+# Author: Dertje Roggeveen
 def pos_tags_distribution(doc):
     """
     Calculate where in a sentence each POS tag appears on average.
