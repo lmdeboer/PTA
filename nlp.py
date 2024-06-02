@@ -93,10 +93,15 @@ def semantics(tokens, semantics_file, label, text):
 
     unique_synsets_count = unique_synsets(tokens)
     semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
+<<<<<<< HEAD
     avg_token_without_synset, avg_token_without_synset_eval = \
         average_tokens_without_synsets(tokens, num_tokens_without_synsets)
     semantics_file.write(f"Average amount of tokens without synsets: "
                          f"{avg_token_without_synset}")
+=======
+    avg_token_without_synset, avg_token_without_synset_eval = average_tokens_without_synsets(tokens, num_tokens_without_synsets)
+    semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}\n")
+>>>>>>> c47efeaa71db8301911568cf49b8977821fb2ebf
     if avg_token_without_synset_eval:
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
@@ -112,6 +117,7 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write("-> Evaluation: AI-generated text\n")
     # End part Roshana Vegter
 
+    # Author Julian Paagman
     num_named_entities, named_entities_eval = count_named_entities(text)
     num_unique_entities, unique_entities_eval = count_unique_entities(text)
     num_clusters, avg_chain_len, max_chain_len = count_coreference(text)
