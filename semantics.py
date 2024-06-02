@@ -145,7 +145,7 @@ def average_tokens_without_synsets(tokens, tokens_without_synsets):
     return avg_tokens_without_synsets, evaluation
 
 
-
+# Author Julian Paagman
 def count_named_entities(text):
     """
     Count the number of named entities per tag
@@ -158,6 +158,8 @@ def count_named_entities(text):
     return count
 
 
+
+# Author Julian Paagman
 def count_unique_entities(text):
     """
     Counts the number of unique entities
@@ -171,6 +173,7 @@ def count_unique_entities(text):
     return len(unique)
 
 
+# Author Julian Paagman
 def count_coreference(doc):
     """
     Counts the number of coreference clusters, average length of a cluster

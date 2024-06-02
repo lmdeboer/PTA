@@ -171,13 +171,17 @@ def pragmatic(text, pf):
 
     return final_evaluation
 
-def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics):
+
+def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
     evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
     true_count = sum(evaluation == True for evaluation in evaluations)
     if true_count > 2:
         final_evaluation = True
+        ef.write('\n\n Final Evaluation: AI-generated text')
     else:
         final_evaluation = False
+        ef.write('\n\n Final Evaluation: Human-generated text')
+    return final_evaluation
 
 
 def main():
@@ -192,22 +196,26 @@ def main():
 
     with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
         syntax_file.write("Artificial articles\n")
-        syntax(ai_text, syntax_file)
+        ev_syntax_ai = syntax(ai_text, syntax_file)
         syntax_file.write("Human articles\n")
-        syntax(human_text, syntax_file)
+        ev_syntax_h = syntax(human_text, syntax_file)
 
     with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
-        semantics(ai_tokens, semantics_file, "Artificial", ai_text)
-        semantics(human_tokens, semantics_file, "Human", human_text)
+        ev_semantics_ai = semantics(ai_tokens, semantics_file, "Artificial", ai_text)
+        ev_semantics_h = semantics(human_tokens, semantics_file, "Human", human_text)
 
     with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
         pf.write('Human articles\n\n')
-        pragmatic(human_text, pf)
+        ev_pragmatics_h = pragmatic(human_text, pf)
         pf.write('\n\nAI articles\n\n')
-        pragmatic(ai_text, pf)
+        ev_pragmatics_ai = pragmatic(ai_text, pf)
 
+    with open('evaluation.txt', 'w', encoding='utf-8') as ef:
+        ef.write('1st file articles\n\n')
+        final_evaluation(ev_syntax_ai, ev_semantics_ai, ev_pragmatics_ai, ef)
 
-
+        ef.write('\n\n2nd file articles: \n\n')
+        final_evaluation(ev_syntax_h, ev_semantics_h, ev_pragmatics_h, ef)
 
 if __name__ == '__main__':
     main()
