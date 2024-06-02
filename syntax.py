@@ -51,8 +51,7 @@ def count_misspelled_words(text):
     words = [token.text for token in text if token.is_alpha]
     misspelled = spell.unknown(words)
 
-    return len(misspelled), misspelled
-
+    return len(misspelled), len(words)
 
 def average_length(text):
     """Calculates the average length of sentences in a given SpaCy `Doc`."""
