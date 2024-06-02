@@ -58,26 +58,50 @@ def syntax(text, syntax_file):
     syntax_file.write("----------------------------------------------------------\n")
     syntax_file.write("\n")
 
-    return True
-
 
 def semantics(tokens, semantics_file, label, text):
+    semantics_file.write(f"{label} articles\n")
     ambiguous_words = count_ambiguous_words(tokens)
+    semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
+    average_amount_ambiguous_words, ambig_words_eval = average_ambiguous_words(tokens)
+    semantics_file.write(f"Average amount of ambiguous words: {average_amount_ambiguous_words}\n")
+    if ambig_words_eval:
+        semantics_file.write("-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write("-> Evaluation: AI-generated text\n")
+
+
+    num_tokens_without_synsets, tokens_without_synsets, synset_eval = count_tokens_without_synsets(tokens)
+    semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_tokens_without_synsets}\n")
+    semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {tokens_without_synsets}\n")
+    if synset_eval:
+        semantics_file.write("-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write("-> Evaluation: AI-generated text\n")
+
+
     unique_synsets_count = unique_synsets(tokens)
+    semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
+    avg_token_without_synset, avg_token_without_synset_eval = average_tokens_without_synsets(tokens, num_tokens_without_synsets)
+    semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}")
+    if avg_token_without_synset_eval:
+        semantics_file.write("-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write("-> Evaluation: AI-generated text\n")
+
     hypernyms = get_noun_hypernyms(tokens)
-    most_common_hypernyms = common_hypernyms(hypernyms)
-    num_nouns_without_synsets, nouns_without_synsets = count_tokens_without_synsets(text)
+    most_common_hypernyms, hypernym_eval = common_hypernyms(hypernyms)
+    semantics_file.write(f"10 most common hypernyms in {label} text: {most_common_hypernyms}\n")
+    if hypernym_eval:
+        semantics_file.write("-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write("-> Evaluation: AI-generated text\n")
+
+
     num_named_entities = count_named_entities(text)
     num_unique_entities = count_unique_entities(text)
     num_clusters, avg_chain_len, max_chain_len = count_coreference(text)
-    num_human_nouns_without_synsets, human_nouns_without_synsets = count_tokens_without_synsets(tokens)
 
-    semantics_file.write(f"{label} articles\n")
-    semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
-    semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
-    semantics_file.write(f"10 most common hypernyms in {label} text: {most_common_hypernyms}\n")
-    semantics_file.write(f"Amount of tokens in {label} articles that have no synsets: {num_nouns_without_synsets}\n")
-    semantics_file.write(f"Top 10 tokens without synsets in {label} articles: {nouns_without_synsets}\n")
     semantics_file.write(f"Number of named entities: {num_named_entities}\n")
     semantics_file.write(f"Number of unique named entities: {num_unique_entities}\n")
     semantics_file.write(f"Number of coreference clusters: {num_clusters}\n")
@@ -85,8 +109,17 @@ def semantics(tokens, semantics_file, label, text):
     semantics_file.write(f"Max length of a coreference chain: {max_chain_len}\n")
     semantics_file.write("----------------------------------------------------------\n")
 
-    return False
 
+    evaluations = [ambig_words_eval, avg_token_without_synset_eval, hypernym_eval, synset_eval]
+    true_count = sum(evaluation == True for evaluation in evaluations)
+    if true_count > 2:
+        final_evaluation = True
+        semantics_file.write('\n\n Final Evaluation: AI-generated text')
+    else:
+        final_evaluation = False
+        semantics_file.write('\n\n Final Evaluation: Human-generated text')
+
+    return final_evaluation
 
 def pragmatic(text, pf):
     sorted_word_frequency, polarity, subjectivity, evaluation = sentiment_analysis_tb(text)
@@ -138,16 +171,13 @@ def pragmatic(text, pf):
 
     return final_evaluation
 
-def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
+def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics):
     evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
     true_count = sum(evaluation == True for evaluation in evaluations)
     if true_count > 2:
         final_evaluation = True
-        ef.write('\n\n Final Evaluation: AI-generated text')
     else:
         final_evaluation = False
-        ef.write('\n\n Final Evaluation: Human-generated text')
-    return final_evaluation
 
 
 def main():
@@ -162,26 +192,19 @@ def main():
 
     with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
         syntax_file.write("Artificial articles\n")
-        ev_syntax_ai = syntax(ai_text, syntax_file)
+        syntax(ai_text, syntax_file)
         syntax_file.write("Human articles\n")
-        ev_syntax_h = syntax(human_text, syntax_file)
+        syntax(human_text, syntax_file)
 
     with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
-        ev_semantics_ai = semantics(ai_tokens, semantics_file, "Artificial", ai_text)
-        ev_semantics_h = semantics(human_tokens, semantics_file, "Human", human_text)
+        semantics(ai_tokens, semantics_file, "Artificial", ai_text)
+        semantics(human_tokens, semantics_file, "Human", human_text)
 
     with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
         pf.write('Human articles\n\n')
-        ev_pragmatics_h = pragmatic(human_text, pf)
+        pragmatic(human_text, pf)
         pf.write('\n\nAI articles\n\n')
-        ev_pragmatics_ai = pragmatic(ai_text, pf)
-
-    with open('evaluation.txt', 'w', encoding='utf-8') as ef:
-        ef.write('1st file articles\n\n')
-        final_evaluation(ev_syntax_ai, ev_semantics_ai, ev_pragmatics_ai, ef)
-
-        ef.write('\n\n2nd file articles: \n\n')
-        final_evaluation(ev_syntax_h, ev_semantics_h, ev_pragmatics_h, ef)
+        pragmatic(ai_text, pf)
 
 
 
