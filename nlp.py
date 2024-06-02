@@ -65,6 +65,15 @@ def syntax(text, syntax_file):
                       "-----------------\n")
     syntax_file.write("\n")
 
+    evaluations = [stop_words_eval, length_eval, misspelled_eval]
+    true_count = sum(evaluation is True for evaluation in evaluations)
+    if true_count >= 2:
+        final_evaluation = True
+    else:
+        final_evaluation = False
+
+    return final_evaluation
+
 
 def semantics(tokens, semantics_file, label, text):
     # Author Roshana Vegter
@@ -93,8 +102,15 @@ def semantics(tokens, semantics_file, label, text):
 
     unique_synsets_count = unique_synsets(tokens)
     semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
+
+    avg_token_without_synset, avg_token_without_synset_eval = \
+        average_tokens_without_synsets(tokens, num_tokens_without_synsets)
+    semantics_file.write(f"Average amount of tokens without synsets: "
+                         f"{avg_token_without_synset}")
+
     avg_token_without_synset, avg_token_without_synset_eval = average_tokens_without_synsets(tokens, num_tokens_without_synsets)
     semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}\n")
+
     if avg_token_without_synset_eval:
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
@@ -194,8 +210,6 @@ def pragmatic(text, pf):
     TraF = discourse_analysis(text)
     pf.write('\n\n Discourse Features\n')
     pf.write('\nReadability Features: ' + str(TraF))
-    pf.write("\n-----------------------------------------"
-             "-----------------\n")
 
     evaluations = [evaluation, evaluation_pos_sents,
                    evaluation_neg_sents, evaluation_as]
@@ -207,13 +221,16 @@ def pragmatic(text, pf):
         final_evaluation = False
         pf.write('\n\n Final Evaluation: Human-generated text')
 
+    pf.write("\n-----------------------------------------"
+             "-----------------\n")
+
     return final_evaluation
 
-
+# author: Laura de Boer
 def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
     evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
     true_count = sum(evaluation is True for evaluation in evaluations)
-    if true_count > 2:
+    if true_count > 1:
         final_evaluation = True
         ef.write('\n\n Final Evaluation: AI-generated text')
     else:
@@ -223,7 +240,7 @@ def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
 
 
 def main():
-    file = 'group2.jsonl'
+    file = 'human.jsonl'
     texts = read_file(file)
 
     for doc in texts.keys():
@@ -242,8 +259,7 @@ def main():
             ev_pragmatics = pragmatic(doc, pf)
 
         with open('evaluation.txt', 'a', encoding='utf-8') as ef:
-            ef.write('File articles\n\n')
-            final_evaluation = final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef)
+            final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef)
 
         if final_evaluation:
             texts[doc] == "AI"

@@ -34,7 +34,7 @@ def read_file(file_name):
 def stemming(text):
     pass
 
-
+# author: Laura de Boer
 def lemmatization(text):
     """
     Function which lemmatizes the text.
@@ -44,7 +44,7 @@ def lemmatization(text):
 
     return [token.lemma_ for token in text]
 
-
+# author: Laura de Boer
 def tokenization(text):
     """
     Function which tokenizes the text.

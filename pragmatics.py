@@ -9,7 +9,7 @@ from lingfeat import extractor
 import asent
 import spacy
 
-
+# author: Laura de Boer
 def sentiment_analysis_tb(text):
     """
     Sentiment analysis using TextBlob. It first establishes the
@@ -47,24 +47,28 @@ def sentiment_analysis_tb(text):
     # words that usually only appear in the top ten high-sentiment
     # words in AI texts
     ai_words = ['ruthless', 'brilliant', 'happy', 'legendary', 'horrific',
-                'beautiful', 'grim', 'wonderful', 'impressive', 'perfect']
+                'beautiful', 'grim', 'wonderful', 'impressive', 'perfect', 'shocking']
     # initialise the variable 'evaluation'
-    evaluation = False
-    # pattern 1: above words were found to only appear in the
-    # high-sentiment/frequency dictionary of AI-generated articles
-    # iterate through sorted dictionary
-    for word, frequency in sorted_word_frequency:
-        # check if word from dictionary is in the words typical
-        # for AI-generated texts
-        if word in ai_words:
-            evaluation = True
-            # exit the loop if an AI word is found in the top 10
-            break
+    if sorted_word_frequency:
+        evaluation = False
+        # pattern 1: above words were found to only appear in the
+        # high-sentiment/frequency dictionary of AI-generated articles
+        # iterate through sorted dictionary
+        for word, frequency in sorted_word_frequency:
+            # check if word from dictionary is in the words typical
+            # for AI-generated texts
+            if word in ai_words:
+                evaluation = True
+                # exit the loop if an AI word is found in the top 10
+                break
+    else:
+        evaluation = None
+
 
     return sorted_word_frequency, doc._.blob.polarity,\
         doc._.blob.subjectivity, evaluation
 
-
+# author: Laura de Boer
 def sentiment_ratios(text):
     """
     In this function, high sentiment ratio, the percentage of positive and
@@ -100,14 +104,17 @@ def sentiment_ratios(text):
     positive_sents_perc = sum(positive_sents) / sentences
     # pattern: AI-texts usually have a positive-sentence
     # percentage lower than 0.7
-    if positive_sents_perc < 0.7:
+    if positive_sents_perc < 1:
         evaluation_pos_sentences = True
     else:
         evaluation_pos_sentences = False
 
     # calculate percentage of negative sentences overall
     negative_sents = [1 for sentence in doc if sentence._.blob.polarity < 0]
-    negative_sents_perc = sum(negative_sents) / sentences
+    if negative_sents:
+        negative_sents_perc = sum(negative_sents) / sentences
+    else:
+        negative_sents_perc = 0
     # pattern: AI-texts usually have a negative-sentence
     # percentage lower than 0.4
     if negative_sents_perc < 0.4:
@@ -125,7 +132,7 @@ def sentiment_ratios(text):
         evaluation_neg_sentences, positive_sents_perc,\
         negative_sents_perc, pos_neg_ratio
 
-
+# author: Laura de Boer
 def sentiment_analysis_asent(text):
     """
     Sentiment analysis using ASEnt. It first establishes the necessary
@@ -151,7 +158,7 @@ def sentiment_analysis_asent(text):
 
     return doc._.polarity, evaluation
 
-
+# author: Laura de Boer
 def discourse_analysis(text):
     """
     Using LingFeat's Discourse Analysis functions, namely Entity Density and
