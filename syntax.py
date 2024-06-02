@@ -40,27 +40,43 @@ def count_unique_tags(tags):
 
 def count_stop_words(text):
     stop_words = 0
+    words = [token.text for token in text if token.is_alpha]
     for word in text:
         if word.is_stop:
             stop_words += 1
 
-    return stop_words
+    percentage_stop_words = (len(stop_words) / len(words)) * 100
+
+    evaluation = False
+    if percentage_stop_words > 40:
+        evaluation = True
+
+    return stop_words, evaluation
 
 
 def count_misspelled_words(text):
     spell = SpellChecker()
     words = [token.text for token in text if token.is_alpha]
     misspelled = spell.unknown(words)
+    percentage_wrong = (len(misspelled) / len(words)) * 100
 
-    return len(misspelled), len(words)
+    evaluation = False
+    if percentage_wrong > 15:
+        evaluation = True
+
+    return len(misspelled), evaluation
 
 def average_length(text):
     """Calculates the average length of sentences in a given SpaCy `Doc`."""
-    length = 0
+    sent_length = 0
     for sentence in text:
-        length += len(sentence)
+        sent_length += len(sentence)
 
-    return round(length / len(text), 2)
+    evaluation = False
+    if len(sent_length) < 4.5:
+        evaluation = True
+
+    return round(length / len(text), 2), evaluation
 
 
 def most_frequent_asked_dependency(text, dependency):

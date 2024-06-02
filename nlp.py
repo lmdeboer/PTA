@@ -29,9 +29,26 @@ def syntax(text, syntax_file):
 
     syntax_file.write(f"Number of unique POS tags: {count_unique_tags(tags)}\n")
 
-    syntax_file.write(f"Amount of stop words: {count_stop_words(text)}\n")
-    syntax_file.write(f"Average sentence length: {average_length(text)}\n")
-    syntax_file.write(f"Number of misspelled words: {count_misspelled_words(text)}\n")
+    stop_words, stop_words_eval = count_stop_words(text)
+    syntax_file.write(f"Amount of stop words: {stop_words}\n")
+    if stop_words_eval:
+        syntax_file.write("\n -> Evaluation: Human-generated text")
+    else:
+        syntax_file.write("\n -> Evaluation: AI-generated text")
+
+    sent_length, length_eval = average_length(text)
+    syntax_file.write(f"Average sentence length: {sent_length}\n")
+    if length_eval:
+        syntax_file.write("\n -> Evaluation: Human-generated text")
+    else:
+        syntax_file.write("\n -> Evaluation: AI-generated text")
+
+    misspelled_words, misspelled_eval = count_misspelled_words(text)
+    syntax_file.write(f"Number of misspelled words: {misspelled_words}\n")
+    if misspelled_eval:
+        syntax_file.write("\n -> Evaluation: Human-generated text")
+    else:
+        syntax_file.write("\n -> Evaluation: AI-generated text")
 
     syntax_file.write(f"Most common specified dependency: {most_frequent_asked_dependency(text, 'ADJ')}\n")
 
