@@ -9,13 +9,16 @@ from fastcoref import spacy_component
 from collections import Counter
 import spacy
 
+
 nlp = spacy.load("en_core_web_sm")
 nlp.add_pipe("fastcoref")
+
 
 # Author Roshana Vegter
 def unique_synsets(tokens):
     """
-    This functions counts the amount of unique synsets in a list of tokens.
+    This functions counts the amount of unique
+    synsets in a list of tokens.
     :param tokens: List of tokens.
     :return: Number of unique synsets.
     """
@@ -25,6 +28,7 @@ def unique_synsets(tokens):
         synsets = wn.synsets(token)
         for synset in synsets:
             synsets_set.add(synset)
+
     return len(synsets_set)
 
 
@@ -40,20 +44,22 @@ def get_noun_hypernyms(tokens):
         synsets = wn.synsets(token, pos=wn.NOUN)
         for synset in synsets:
             hypernyms.extend(synset.hypernyms())
+
     return hypernyms
 
 
 # Author Roshana Vegter
 def common_hypernyms(hypernyms):
     """
-    This function finds the 10 most common hypernyms in a list of tokens.
+    This function finds the 10 most common hypernyms in a
+    list of tokens.
     :param tokens: List of tokens.
     :return: List of the 10 most common hypernyms.
     """
     hypernym_counter = Counter()
     for hypernym in hypernyms:
         hypernym_counter[hypernym.name()] += 1
-    
+
     evaluation = False
     if hypernym_counter.most_common(2)[1][0] == 'time_period.n.01':
         evaluation = True
@@ -64,7 +70,8 @@ def common_hypernyms(hypernyms):
 # Author Roshana Vegter
 def count_ambiguous_words(tokens):
     """
-    This function counts the amount of ambiguous words in a list of tokens.
+    This function counts the amount of ambiguous words in
+    a list of tokens.
     :param tokens: List of tokens.
     :return: Number of ambiguous words.
     """
@@ -73,19 +80,22 @@ def count_ambiguous_words(tokens):
         # Check token has more than 1 synsets
         if len(wn.synsets(token)) > 1:
             num_ambiguous += 1
+
     return num_ambiguous
 
 
 # Author Roshana Vegter
 def average_ambiguous_words(tokens):
     """
-    This function calculates the average number of ambiguous words in a list of tokens.
+    This function calculates the average number of ambiguous
+    words in a list of tokens.
     :param tokens: List of tokens.
     :return: Average number of ambiguous words.
     """
     total_ambiguous_words = count_ambiguous_words(tokens)
     total_tokens = len(tokens)
-    average_ambiguous = total_ambiguous_words / total_tokens if total_tokens > 0 else 0
+    average_ambiguous = total_ambiguous_words / total_tokens \
+        if total_tokens > 0 else 0
 
     evaluation = False
     if average_ambiguous > 0.52:
@@ -97,10 +107,12 @@ def average_ambiguous_words(tokens):
 # Author Roshana Vegter
 def count_tokens_without_synsets(tokens):
     """
-    This function counts the amount of tokens that have no synsets in WordNet,
-    and returns te total count and the 10 most common words without synsets.
+    This function counts the amount of tokens that have no
+    synsets in WordNet, and returns te total count and the
+    10 most common words without synsets.
     :param tokens: List of tokens.
-    :return: Amount of tokens without synsets and the 10 most common tokens
+    :return: Amount of tokens without synsets and the 10
+    most common tokens
     without synsets.
     """
     num_tokens_without_synsets = 0
@@ -108,13 +120,14 @@ def count_tokens_without_synsets(tokens):
 
     for token in tokens:
         if isinstance(token, str):
-        # Get synsets of tokens.
+            # Get synsets of tokens.
             synsets = wn.synsets(token)
-            # If it has no synsets add to count and add token to the list.
+            # If it has no synsets add to count and add
+            # token to the list.
             if not synsets:
                 num_tokens_without_synsets += 1
                 tokens_without_synsets.append(token)
-    
+
     # Count number of tokens without synsets
     total_count = num_tokens_without_synsets
     common_tokens = Counter(tokens_without_synsets).most_common(10)
@@ -129,17 +142,20 @@ def count_tokens_without_synsets(tokens):
 # Roshana Vegter
 def average_tokens_without_synsets(tokens, tokens_without_synsets):
     """
-    This function calculates the average number of tokens without synsets 
-    in a list of tokens.
+    This function calculates the average number of tokens
+    without synsets in a list of tokens.
     :param tokens: List of lists of tokens.
+    :param tokens_without_synsets: List of lists of tokens
+    without synsets
     :return: Average number of tokens without synsets.
     """
     num_tokens_without_synsets = tokens_without_synsets
 
-    avg_tokens_without_synsets = num_tokens_without_synsets / len(tokens)
+    avg_tokens_without_synsets = num_tokens_without_synsets / \
+        len(tokens)
 
     evaluation = False
-    if avg_tokens_without_synsets > 0.4 :
+    if avg_tokens_without_synsets > 0.4:
         evaluation = True
 
     return avg_tokens_without_synsets, evaluation
@@ -150,7 +166,8 @@ def count_named_entities(text):
     """
     Count the number of named entities per tag
     param: List of tokens.
-    returns: a dictionary containing every named entity tag and its frequency
+    returns: a dictionary containing every named entity tag
+    and its frequency
     """
     evaluation = False
     count = Counter()
@@ -159,8 +176,8 @@ def count_named_entities(text):
 
     if len(count) > 6:
         evaluation = True
-    return count, evaluation
 
+    return count, evaluation
 
 
 # Author Julian Paagman
@@ -178,16 +195,19 @@ def count_unique_entities(text):
 
     if len(unique) > 40:
         evaluation = True
+
     return len(unique), evaluation
 
 
 # Author Julian Paagman
 def count_coreference(text):
     """
-    Counts the number of coreference clusters, average length of a cluster
-    and maximum length of a cluster in the text
+    Counts the number of coreference clusters, average
+    length of a cluster and maximum length of a cluster
+    in the text.
     param: A spacy object.
-    returns: The number, average length and maximum length of clusters
+    returns: The number, average length and maximum
+    length of clusters
     in the text
     """
     clusters = text._.coref_clusters
@@ -207,4 +227,3 @@ def count_coreference(text):
     avg_chain_len = total_chain_len / num_clust if num_clust > 0 else 0
 
     return num_clust, avg_chain_len, max_chain_len
-    
