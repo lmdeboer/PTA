@@ -122,8 +122,8 @@ def sentiment_ratios(text):
         pos_neg_ratio = positive_sents_perc / negative_sents_perc
 
     return high_sentiment_ratio, evaluation_pos_sentences,\
-        evaluation_neg_sentences, positive_sents_perc, negative_sents_perc,\
-        pos_neg_ratio
+        evaluation_neg_sentences, positive_sents_perc,\
+        negative_sents_perc, pos_neg_ratio
 
 
 def sentiment_analysis_asent(text):

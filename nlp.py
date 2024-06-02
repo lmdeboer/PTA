@@ -97,21 +97,29 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write("-> Evaluation: AI-generated text\n")
     # End part Roshana Vegter
 
-    num_named_entities = count_named_entities(text)
-    num_unique_entities = count_unique_entities(text)
+    num_named_entities, named_entities_eval = count_named_entities(text)
+    num_unique_entities, unique_entities_eval = count_unique_entities(text)
     num_clusters, avg_chain_len, max_chain_len = count_coreference(text)
 
     semantics_file.write(f"Number of named entities: {num_named_entities}\n")
+    if named_entities_eval:
+        semantics_file.write(f"-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write(f"-> Evaluation: AI-generated text\n")
     semantics_file.write(f"Number of unique named entities: {num_unique_entities}\n")
+    if unique_entities_eval:
+        semantics_file.write(f"-> Evaluation: Human-generated text\n")
+    else:
+        semantics_file.write(f"-> Evaluation: AI-generated text\n")
     semantics_file.write(f"Number of coreference clusters: {num_clusters}\n")
     semantics_file.write(f"Average length of a coreference chain: {avg_chain_len}\n")
     semantics_file.write(f"Max length of a coreference chain: {max_chain_len}\n")
     semantics_file.write("----------------------------------------------------------\n")
 
 
-    evaluations = [ambig_words_eval, avg_token_without_synset_eval, hypernym_eval, synset_eval]
+    evaluations = [ambig_words_eval, avg_token_without_synset_eval, hypernym_eval, synset_eval, named_entities_eval, unique_entities_eval]
     true_count = sum(evaluation == True for evaluation in evaluations)
-    if true_count > 2:
+    if true_count > 3:
         final_evaluation = True
         semantics_file.write('\n\n Final Evaluation: AI-generated text')
     else:
@@ -185,7 +193,7 @@ def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
 
 
 def main():
-    file = 'human.jsonl'
+    file = 'group2.jsonl'
     texts = read_file(file)
 
     for doc in texts.keys():
