@@ -7,6 +7,7 @@ from collections import Counter
 from spellchecker import SpellChecker
 
 
+
 def count_tags(tags):
     """Count the frequency of each POS tag and return the
     10 most frequent tags

@@ -101,9 +101,8 @@ def pragmatic(text, pf):
     else:
         pf.write("\n -> Evaluation: Human-generated text")
 
-    EnGF, TraF = discourse_analysis(text)
+    TraF = discourse_analysis(text)
     pf.write('\n\n Discourse Features\n')
-    pf.write('\nEntity Grid Features (including local coherence scores): ' + str(EnGF))
     pf.write('\nReadability Features: ' + str(TraF))
     pf.write("\n----------------------------------------------------------\n")
 
