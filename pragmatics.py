@@ -101,7 +101,10 @@ def sentiment_ratios(text):
         evaluation_neg_sentences = False
 
     # calculating the relationship of positive versus negative sentences
-    pos_neg_ratio = positive_sents_perc / negative_sents_perc
+    if negative_sents_perc == 0:
+        pos_neg_ratio = 1
+    else:
+        pos_neg_ratio = positive_sents_perc / negative_sents_perc
 
     return high_sentiment_ratio, evaluation_pos_sentences, evaluation_neg_sentences, positive_sents_perc, negative_sents_perc, pos_neg_ratio
 
