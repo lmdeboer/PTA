@@ -60,6 +60,7 @@ def syntax(text, syntax_file):
 
     return True
 
+
 def semantics(tokens, semantics_file, label, text):
     ambiguous_words = count_ambiguous_words(tokens)
     unique_synsets_count = unique_synsets(tokens)
@@ -124,6 +125,7 @@ def pragmatic(text, pf):
     TraF = discourse_analysis(text)
     pf.write('\n\n Discourse Features\n')
     pf.write('\nReadability Features: ' + str(TraF))
+    pf.write("\n----------------------------------------------------------\n")
 
     evaluations = [evaluation, evaluation_pos_sents, evaluation_neg_sents, evaluation_as]
     true_count = sum(evaluation == True for evaluation in evaluations)
@@ -134,19 +136,15 @@ def pragmatic(text, pf):
         final_evaluation = False
         pf.write('\n\n Final Evaluation: Human-generated text')
 
-    pf.write("\n----------------------------------------------------------\n")
-
     return final_evaluation
 
-def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
+def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics):
     evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
     true_count = sum(evaluation == True for evaluation in evaluations)
-    if true_count >= 2:
+    if true_count > 2:
         final_evaluation = True
-        ef.write('\n\n Final Evaluation: AI-generated text')
     else:
         final_evaluation = False
-        ef.write('\n\n Final Evaluation: Human-generated text')
 
 
 def main():
@@ -181,7 +179,6 @@ def main():
 
         ef.write('\n\n2nd file articles: \n\n')
         final_evaluation(ev_syntax_h, ev_semantics_h, ev_pragmatics_h, ef)
-
 
 
 
