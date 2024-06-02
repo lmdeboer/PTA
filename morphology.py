@@ -14,20 +14,18 @@ def read_file(file_name):
     :param file_name: Json file to be read
     :return: text as a spacy object.
     """
-    texts = []
+    nlp = spacy.load("en_core_web_sm")
+    texts = {}
     with open(file_name, 'r', encoding='utf-8') as file:
         lines = file.readlines()
         # half of the files, could not process more due to character limit
-        for line in lines[:326]:
+        for line in lines:
             json_obj = json.loads(line.strip())
             text = json_obj.get('text', '')
-            texts.append(text)
-
-    all_text = ' '.join(texts)
-    nlp = spacy.load("en_core_web_sm")
-    doc = nlp(all_text)
-
-    return doc
+            doc = nlp(text)
+            if doc is not None:
+                texts[doc] = None
+    return texts
 
 
 def stemming(text):

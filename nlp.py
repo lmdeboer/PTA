@@ -151,38 +151,33 @@ def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
 
 
 def main():
-    human_file = 'human.jsonl'
-    ai_file = 'group2.jsonl'
-    human_text = read_file(human_file)
-    ai_text = read_file(ai_file)
-    human_tokens = tokenization(human_text)
-    ai_tokens = tokenization(ai_text)
-    ai_lemmas = lemmatization(ai_text)
-    human_lemmas = lemmatization(human_text)
+    file = 'human.jsonl'
+    texts = read_file(file)
 
-    with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
-        syntax_file.write("Artificial articles\n")
-        ev_syntax_ai = syntax(ai_text, syntax_file)
-        syntax_file.write("Human articles\n")
-        ev_syntax_h = syntax(human_text, syntax_file)
+    for doc in texts.keys():
+        tokens = tokenization(doc)
+        lemmas = lemmatization(doc)
 
-    with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
-        ev_semantics_ai = semantics(ai_tokens, semantics_file, "Artificial", ai_text)
-        ev_semantics_h = semantics(human_tokens, semantics_file, "Human", human_text)
+        with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
+            syntax_file.write("Articles\n")
+            ev_syntax = syntax(doc, syntax_file)
 
-    with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
-        pf.write('Human articles\n\n')
-        ev_pragmatics_h = pragmatic(human_text, pf)
-        pf.write('\n\nAI articles\n\n')
-        ev_pragmatics_ai = pragmatic(ai_text, pf)
+        with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
+            ev_semantics = semantics(tokens, semantics_file, "Articles", doc)
 
-    with open('evaluation.txt', 'w', encoding='utf-8') as ef:
-        ef.write('1st file articles\n\n')
-        final_evaluation(ev_syntax_ai, ev_semantics_ai, ev_pragmatics_ai, ef)
+        with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
+            pf.write('Articles\n\n')
+            ev_pragmatics = pragmatic(doc, pf)
 
-        ef.write('\n\n2nd file articles: \n\n')
-        final_evaluation(ev_syntax_h, ev_semantics_h, ev_pragmatics_h, ef)
-
+        with open('evaluation.txt', 'w', encoding='utf-8') as ef:
+            ef.write('File articles\n\n')
+            final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef)
+        
+        if final_evaluation:
+            texts[doc] == "AI"
+        else:
+            texts[doc] == "Human"
+    print(texts)
 
 
 
