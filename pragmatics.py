@@ -140,6 +140,5 @@ def discourse_analysis(text):
     LingFeat = extractor.pass_text(text)
     LingFeat.preprocess()
     TraF = LingFeat.TraF_()  # Readability Features
-    EnGF = LingFeat.EnGF_()  # Entity Grid Features
 
-    return EnGF, TraF
+    return TraF
