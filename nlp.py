@@ -97,6 +97,7 @@ def semantics(tokens, semantics_file, label, text):
         semantics_file.write("-> Evaluation: AI-generated text\n")
     # End part Roshana Vegter
 
+    # Author Julian Paagman
     num_named_entities, named_entities_eval = count_named_entities(text)
     num_unique_entities, unique_entities_eval = count_unique_entities(text)
     num_clusters, avg_chain_len, max_chain_len = count_coreference(text)
