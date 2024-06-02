@@ -138,13 +138,16 @@ def pragmatic(text, pf):
 
     return final_evaluation
 
-def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics):
+def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
     evaluations = [ev_syntax, ev_semantics, ev_pragmatics]
     true_count = sum(evaluation == True for evaluation in evaluations)
     if true_count > 2:
         final_evaluation = True
+        ef.write('\n\n Final Evaluation: AI-generated text')
     else:
         final_evaluation = False
+        ef.write('\n\n Final Evaluation: Human-generated text')
+    return final_evaluation
 
 
 def main():
