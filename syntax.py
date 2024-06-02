@@ -45,7 +45,7 @@ def count_stop_words(text):
         if word.is_stop:
             stop_words += 1
 
-    percentage_stop_words = (len(stop_words) / len(words)) * 100
+    percentage_stop_words = stop_words / len(words) * 100
 
     evaluation = False
     if percentage_stop_words > 40:
@@ -73,7 +73,7 @@ def average_length(text):
         sent_length += len(sentence)
 
     evaluation = False
-    if len(sent_length) < 4.5:
+    if sent_length < 4.5:
         evaluation = True
 
     return round(sent_length / len(text), 2), evaluation
