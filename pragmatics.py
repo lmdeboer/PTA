@@ -39,7 +39,8 @@ def sentiment_analysis_tb(text):
     sorted_word_frequency = sorted(word_frequencies.items(), key=lambda x: x[1], reverse=True)
 
     # words that usually only appear in the top ten high-sentiment words in AI texts
-    ai_words = ['ruthless', 'brilliant', 'happy', 'legendary', 'horrific', 'beautiful', 'grim']
+    ai_words = ['ruthless', 'brilliant', 'happy', 'legendary', 'horrific', 'beautiful', 'grim', 'wonderful',
+                'impressive', 'perfect']
     # initialise the variable 'evaluation'
     evaluation = False
     # pattern 1: above words were found to only appear in the high-sentiment/frequency dictionary of AI-generated
