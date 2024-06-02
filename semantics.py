@@ -152,10 +152,14 @@ def count_named_entities(text):
     param: List of tokens.
     returns: a dictionary containing every named entity tag and its frequency
     """
+    evaluation = False
     count = Counter()
     for ent in text.ents:
         count[ent.label_] += 1
-    return count
+
+    if len(count) > 6:
+        evaluation = True
+    return count, evaluation
 
 
 
@@ -166,23 +170,27 @@ def count_unique_entities(text):
     param: List of tokens.
     returns: The number of unique named entity tags
     """
+    evaluation = False
     unique = []
     for ent in text.ents:
         if ent not in unique:
             unique.append(ent)
-    return len(unique)
+
+    if len(unique) > 40:
+        evaluation = True
+    return len(unique), evaluation
 
 
 # Author Julian Paagman
-def count_coreference(doc):
+def count_coreference(text):
     """
     Counts the number of coreference clusters, average length of a cluster
     and maximum length of a cluster in the text
-    param: A text.
+    param: A spacy object.
     returns: The number, average length and maximum length of clusters
     in the text
     """
-    clusters = doc._.coref_clusters
+    clusters = text._.coref_clusters
 
     if clusters is None:
         return 0, 0, 0
