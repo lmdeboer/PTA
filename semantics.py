@@ -53,7 +53,12 @@ def common_hypernyms(hypernyms):
     hypernym_counter = Counter()
     for hypernym in hypernyms:
         hypernym_counter[hypernym.name()] += 1
-    return hypernym_counter.most_common(10)
+    
+    evaluation = False
+    if hypernym_counter.most_common(2)[1][0] == 'time_period.n.01':
+        evaluation = True
+
+    return hypernym_counter.most_common(10), evaluation
 
 
 # Author Roshana Vegter
@@ -69,6 +74,24 @@ def count_ambiguous_words(tokens):
         if len(wn.synsets(token)) > 1:
             num_ambiguous += 1
     return num_ambiguous
+
+
+# Author Roshana Vegter
+def average_ambiguous_words(tokens):
+    """
+    This function calculates the average number of ambiguous words in a list of tokens.
+    :param tokens: List of tokens.
+    :return: Average number of ambiguous words.
+    """
+    total_ambiguous_words = count_ambiguous_words(tokens)
+    total_tokens = len(tokens)
+    average_ambiguous = total_ambiguous_words / total_tokens if total_tokens > 0 else 0
+
+    evaluation = False
+    if average_ambiguous > 0.52:
+        evaluation = True
+
+    return average_ambiguous, evaluation
 
 
 # Author Roshana Vegter
@@ -95,7 +118,31 @@ def count_tokens_without_synsets(tokens):
     # Count number of tokens without synsets
     total_count = num_tokens_without_synsets
     common_tokens = Counter(tokens_without_synsets).most_common(10)
-    return total_count, common_tokens
+
+    evaluation = False
+    if common_tokens and common_tokens[0][0] == 'the':
+        evaluation = True
+
+    return total_count, common_tokens, evaluation
+
+
+# Roshana Vegter
+def average_tokens_without_synsets(tokens, tokens_without_synsets):
+    """
+    This function calculates the average number of tokens without synsets 
+    in a list of tokens.
+    :param tokens: List of lists of tokens.
+    :return: Average number of tokens without synsets.
+    """
+    num_tokens_without_synsets = tokens_without_synsets
+
+    avg_tokens_without_synsets = num_tokens_without_synsets / len(tokens)
+
+    evaluation = False
+    if avg_tokens_without_synsets > 0.4 :
+        evaluation = True
+
+    return avg_tokens_without_synsets, evaluation
 
 
 # Author Julian Paagman
@@ -109,6 +156,7 @@ def count_named_entities(text):
     for ent in text.ents:
         count[ent.label_] += 1
     return count
+
 
 
 # Author Julian Paagman
@@ -151,3 +199,4 @@ def count_coreference(doc):
     avg_chain_len = total_chain_len / num_clust if num_clust > 0 else 0
 
     return num_clust, avg_chain_len, max_chain_len
+    
