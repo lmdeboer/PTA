@@ -93,15 +93,8 @@ def semantics(tokens, semantics_file, label, text):
 
     unique_synsets_count = unique_synsets(tokens)
     semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
-<<<<<<< HEAD
-    avg_token_without_synset, avg_token_without_synset_eval = \
-        average_tokens_without_synsets(tokens, num_tokens_without_synsets)
-    semantics_file.write(f"Average amount of tokens without synsets: "
-                         f"{avg_token_without_synset}")
-=======
     avg_token_without_synset, avg_token_without_synset_eval = average_tokens_without_synsets(tokens, num_tokens_without_synsets)
     semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}\n")
->>>>>>> c47efeaa71db8301911568cf49b8977821fb2ebf
     if avg_token_without_synset_eval:
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
@@ -237,20 +230,20 @@ def main():
         tokens = tokenization(doc)
         lemmas = lemmatization(doc)
 
-        with open('syntax.txt', 'w', encoding='utf-8') as syntax_file:
+        with open('syntax.txt', 'a', encoding='utf-8') as syntax_file:
             syntax_file.write("Articles\n")
             ev_syntax = syntax(doc, syntax_file)
 
-        with open('semantics.txt', 'w', encoding='utf-8') as semantics_file:
+        with open('semantics.txt', 'a', encoding='utf-8') as semantics_file:
             ev_semantics = semantics(tokens, semantics_file, "Articles", doc)
 
-        with open('pragmatics.txt', 'w', encoding='utf-8') as pf:
+        with open('pragmatics.txt', 'a', encoding='utf-8') as pf:
             pf.write('Articles\n\n')
             ev_pragmatics = pragmatic(doc, pf)
 
-        with open('evaluation.txt', 'w', encoding='utf-8') as ef:
+        with open('evaluation.txt', 'a', encoding='utf-8') as ef:
             ef.write('File articles\n\n')
-            final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef)
+            final_evaluation = final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef)
 
         if final_evaluation:
             texts[doc] == "AI"
