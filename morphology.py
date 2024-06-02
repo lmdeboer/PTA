@@ -9,7 +9,8 @@ import spacy
 
 def read_file(file_name):
     """
-    Function which reads the json file, and appends each article to the list texts, as well as apply a spacy object
+    Function which reads the json file, and appends each article
+    to the list texts, as well as apply a spacy object
     on the document.
     :param file_name: Json file to be read
     :return: text as a spacy object.
@@ -18,13 +19,15 @@ def read_file(file_name):
     texts = {}
     with open(file_name, 'r', encoding='utf-8') as file:
         lines = file.readlines()
-        # half of the files, could not process more due to character limit
+        # half of the files, could not process more due to
+        # character limit
         for line in lines:
             json_obj = json.loads(line.strip())
             text = json_obj.get('text', '')
             doc = nlp(text)
             if doc is not None:
                 texts[doc] = None
+
     return texts
 
 
