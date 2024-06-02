@@ -155,7 +155,7 @@ def average_tokens_without_synsets(tokens, tokens_without_synsets):
         len(tokens)
 
     evaluation = False
-    if avg_tokens_without_synsets > 0.4:
+    if avg_tokens_without_synsets < 0.4:
         evaluation = True
 
     return avg_tokens_without_synsets, evaluation

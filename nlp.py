@@ -82,7 +82,7 @@ def semantics(tokens, semantics_file, label, text):
     unique_synsets_count = unique_synsets(tokens)
     semantics_file.write(f"Number of unique synsets: {unique_synsets_count}\n")
     avg_token_without_synset, avg_token_without_synset_eval = average_tokens_without_synsets(tokens, num_tokens_without_synsets)
-    semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}")
+    semantics_file.write(f"Average amount of tokens without synsets: {avg_token_without_synset}\n")
     if avg_token_without_synset_eval:
         semantics_file.write("-> Evaluation: Human-generated text\n")
     else:
