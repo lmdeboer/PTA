@@ -50,7 +50,7 @@ def sentiment_analysis_tb(text):
                 'beautiful', 'grim', 'wonderful', 'impressive', 'perfect', 'shocking']
     # initialise the variable 'evaluation'
     if sorted_word_frequency:
-        evaluation = False
+        evaluation = True
         # pattern 1: above words were found to only appear in the
         # high-sentiment/frequency dictionary of AI-generated articles
         # iterate through sorted dictionary
@@ -58,7 +58,7 @@ def sentiment_analysis_tb(text):
             # check if word from dictionary is in the words typical
             # for AI-generated texts
             if word in ai_words:
-                evaluation = True
+                evaluation = False
                 # exit the loop if an AI word is found in the top 10
                 break
     else:
@@ -105,9 +105,9 @@ def sentiment_ratios(text):
     # pattern: AI-texts usually have a positive-sentence
     # percentage lower than 0.7
     if positive_sents_perc < 1:
-        evaluation_pos_sentences = True
-    else:
         evaluation_pos_sentences = False
+    else:
+        evaluation_pos_sentences = True
 
     # calculate percentage of negative sentences overall
     negative_sents = [1 for sentence in doc if sentence._.blob.polarity < 0]
@@ -118,9 +118,9 @@ def sentiment_ratios(text):
     # pattern: AI-texts usually have a negative-sentence
     # percentage lower than 0.4
     if negative_sents_perc < 0.4:
-        evaluation_neg_sentences = True
-    else:
         evaluation_neg_sentences = False
+    else:
+        evaluation_neg_sentences = True
 
     # calculating the relationship of positive versus negative sentences
     if negative_sents_perc == 0:
@@ -152,9 +152,9 @@ def sentiment_analysis_asent(text):
     # negative while for AI texts, it was
     # positive. However, this is the weakest pattern so far.
     if compound_score > 0:
-        evaluation = True
-    else:
         evaluation = False
+    else:
+        evaluation = True
 
     return doc._.polarity, evaluation
 

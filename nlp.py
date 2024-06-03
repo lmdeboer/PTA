@@ -71,13 +71,14 @@ def syntax(text, syntax_file):
         final_evaluation = True
     else:
         final_evaluation = False
+    syntax_file.write(f"\nEvaluation results: {final_evaluation}\n")
+
 
     return final_evaluation
 
 
 def semantics(tokens, semantics_file, label, text):
     # Author Roshana Vegter
-    semantics_file.write(f"{label} articles\n")
     ambiguous_words = count_ambiguous_words(tokens)
     semantics_file.write(f"Number of ambiguous words: {ambiguous_words}\n")
     average_amount_ambiguous_words, ambig_words_eval = \
@@ -157,10 +158,11 @@ def semantics(tokens, semantics_file, label, text):
     true_count = sum(evaluation is True for evaluation in evaluations)
     if true_count > 3:
         final_evaluation = True
-        semantics_file.write('\n\n Final Evaluation: AI-generated text')
+        semantics_file.write('\n\n Final Evaluation: Human-generated text')
     else:
         final_evaluation = False
-        semantics_file.write('\n\n Final Evaluation: Human-generated text')
+        semantics_file.write('\n\n Final Evaluation: AI-generated text')
+
 
     return final_evaluation
 
@@ -175,9 +177,9 @@ def pragmatic(text, pf):
         pf.write("\nMost frequent high-sentiment words: " +
                  frequency[0] + ": " + str(frequency[1]))
     if evaluation:
-        pf.write("\n -> Evaluation: AI-generated text")
-    else:
         pf.write("\n -> Evaluation: Human-generated text")
+    else:
+        pf.write("\n -> Evaluation: AI-generated text")
 
     high_sentiment_ratio, evaluation_pos_sents, \
         evaluation_neg_sents, positive_sents_perc, \
@@ -188,24 +190,24 @@ def pragmatic(text, pf):
     pf.write("\n\nPositive Sentences Percentage: " +
              str(positive_sents_perc))
     if evaluation_pos_sents:
-        pf.write("\n -> Evaluation: AI-generated text")
-    else:
         pf.write("\n -> Evaluation: Human-generated text")
+    else:
+        pf.write("\n -> Evaluation: AI-generated text")
     pf.write("\n\nNegative Sentences Percentage: " +
              str(negative_sents_perc))
     if evaluation_neg_sents:
-        pf.write("\n -> Evaluation: AI-generated text")
+        pf.write("\n -> Evaluation: Human-generated text")
     else:
-        pf.write("\n -> Evaluation: Human-generated text\n")
+        pf.write("\n -> Evaluation: AI-generated text\n")
     pf.write("\n\nPositive Negative Ratio: " + str(pos_neg_ratio))
 
     polarity, evaluation_as = sentiment_analysis_asent(text)
     pf.write('\n\nSentiment Analysis - Asent\n')
     pf.write('\nSentiment: ' + str(polarity))
     if evaluation_as:
-        pf.write("\n -> Evaluation: AI-generated text")
-    else:
         pf.write("\n -> Evaluation: Human-generated text")
+    else:
+        pf.write("\n -> Evaluation: AI-generated text")
 
     TraF = discourse_analysis(text)
     pf.write('\n\n Discourse Features\n')
@@ -216,10 +218,10 @@ def pragmatic(text, pf):
     true_count = sum(evaluation is True for evaluation in evaluations)
     if true_count > 2:
         final_evaluation = True
-        pf.write('\n\n Final Evaluation: AI-generated text')
+        pf.write('\n\n Final Evaluation: Human-generated text')
     else:
         final_evaluation = False
-        pf.write('\n\n Final Evaluation: Human-generated text')
+        pf.write('\n\n Final Evaluation: AI-generated text')
 
     pf.write("\n-----------------------------------------"
              "-----------------\n")
@@ -232,15 +234,15 @@ def final_evaluation(ev_syntax, ev_semantics, ev_pragmatics, ef):
     true_count = sum(evaluation is True for evaluation in evaluations)
     if true_count > 1:
         final_evaluation = True
-        ef.write('\n\n Final Evaluation: AI-generated text')
+        ef.write('\n\n Final Evaluation: Human-generated text')
     else:
         final_evaluation = False
-        ef.write('\n\n Final Evaluation: Human-generated text')
+        ef.write('\n\n Final Evaluation: AI-generated text')
     return final_evaluation
 
 
 def main():
-    file = 'human.jsonl'
+    file = 'humantest.jsonl'
     texts = read_file(file)
 
     for doc in texts.keys():
@@ -265,7 +267,8 @@ def main():
             texts[doc] == "AI"
         else:
             texts[doc] == "Human"
-    print(texts)
+
+
 
 
 if __name__ == '__main__':
